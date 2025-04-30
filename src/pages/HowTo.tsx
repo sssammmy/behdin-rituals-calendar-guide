@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -11,7 +10,7 @@ import {
   Droplets, 
   Shell, 
   Utensils, 
-  CandlestickIcon
+  CandlestickChart
 } from "lucide-react";
 
 const HowTo = () => {
@@ -75,7 +74,7 @@ const HowTo = () => {
                     
                     <div className="flex items-start">
                       <div className="bg-zoroastrian-light p-3 rounded-full mr-4">
-                        <CandlestickIcon className="w-6 h-6 text-zoroastrian-blue" />
+                        <CandlestickChart className="w-6 h-6 text-zoroastrian-blue" />
                       </div>
                       <div>
                         <h4 className="font-medium text-lg">Candles</h4>
