@@ -335,6 +335,265 @@ const citiesData: Record<string, {
       }
     ],
     otherServices: []
+  },
+  "seattle": {
+    name: "Seattle",
+    temples: [
+      {
+        name: "Zoroastrian Association of Washington",
+        address: "14020 NE 8th St, Bellevue, WA 98007",
+        phone: "(425) 246-6985",
+        website: "zaw.org",
+        contact: "info@zaw.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Evergreen-Washelli Memorial Park",
+        address: "11111 Aurora Ave N, Seattle, WA 98133",
+        phone: "(206) 362-5200",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Evergreen Washelli Funeral Home",
+        address: "11111 Aurora Ave N, Seattle, WA 98133",
+        phone: "(206) 362-5200",
+        website: "evergreen-washelli.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Kobad Jamshed",
+        phone: "(425) 246-6985",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Ballard Blossom",
+        address: "1111 NW 85th St, Seattle, WA 98117",
+        phone: "(206) 782-4213",
+        website: "ballardblossom.com"
+      }
+    ],
+    otherServices: []
+  },
+  "houston": {
+    name: "Houston",
+    temples: [
+      {
+        name: "Zoroastrian Association of Houston",
+        address: "8787 W Airport Blvd, Houston, TX 77071",
+        phone: "(713) 270-9339",
+        website: "zah.org",
+        contact: "info@zah.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Forest Park Westheimer Cemetery",
+        address: "12800 Westheimer Rd, Houston, TX 77077",
+        phone: "(281) 497-2330",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Dignity Memorial Funeral Home",
+        address: "12800 Westheimer Rd, Houston, TX 77077",
+        phone: "(281) 497-2330",
+        website: "dignitymemorial.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Peshotan Unwalla",
+        phone: "(713) 270-9339",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Village Flowery",
+        address: "2404 Rice Blvd, Houston, TX 77005",
+        phone: "(713) 529-1277",
+        website: "villageflowery.com"
+      }
+    ],
+    otherServices: []
+  },
+  "toronto": {
+    name: "Toronto",
+    temples: [
+      {
+        name: "Zoroastrian Society of Ontario",
+        address: "3590 Bayview Ave, North York, ON M2M 3S6, Canada",
+        phone: "(416) 225-7771",
+        website: "zso.org",
+        contact: "admin@zso.org"
+      },
+      {
+        name: "Darbe Mehr Zoroastrian Temple",
+        address: "3590 Bayview Ave, North York, ON M2M 3S6, Canada",
+        phone: "(416) 225-7771",
+        website: "zso.org/darbe-mehr",
+        contact: "admin@zso.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "York Cemetery",
+        address: "160 Beecroft Rd, North York, ON M2N 5Z5, Canada",
+        phone: "(416) 221-3404",
+        details: "Has a dedicated Zoroastrian section"
+      },
+      {
+        name: "Beechwood Cemetery",
+        address: "7241 Jane St, Vaughan, ON L4K 1A7, Canada",
+        phone: "(905) 669-1827",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Elgin Mills Funeral Centre",
+        address: "1591 Elgin Mills Rd E, Richmond Hill, ON L4S 1M9, Canada",
+        phone: "(905) 737-1720",
+        website: "elginmillsfuneralcentre.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Ervad Hoshang Udwadia",
+        phone: "(416) 225-7771",
+        languages: ["English", "Persian", "Gujarati"]
+      },
+      {
+        name: "Mobed Pervez Bajan",
+        phone: "(647) 444-9325",
+        languages: ["English", "Persian"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "North York Flower Shop",
+        address: "5576 Yonge St, North York, ON M2N 5S1, Canada",
+        phone: "(416) 221-0909",
+        website: "northyorkflowershop.com"
+      }
+    ],
+    otherServices: [
+      {
+        name: "Zoroastrian Cultural Foundation",
+        type: "Community Support",
+        details: "Provides cultural programs and support for ceremonies",
+        contact: "admin@zso.org"
+      }
+    ]
+  },
+  "chicago": {
+    name: "Chicago",
+    temples: [
+      {
+        name: "Zoroastrian Association of Metropolitan Chicago",
+        address: "8615 Meadowbrook Dr, Burr Ridge, IL 60527",
+        phone: "(630) 789-1983",
+        website: "zac-chicago.org",
+        contact: "info@zac-chicago.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Rosehill Cemetery",
+        address: "5800 N Ravenswood Ave, Chicago, IL 60660",
+        phone: "(773) 561-5940",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Drake & Son Funeral Home",
+        address: "5303 N Western Ave, Chicago, IL 60625",
+        phone: "(773) 561-6874",
+        website: "drakeandsonfuneralhome.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Ervad Kersey Antia",
+        phone: "(630) 789-1983",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Bunches A Flower Shop",
+        address: "10479 W Cermak Rd, Westchester, IL 60154",
+        phone: "(708) 562-1614",
+        website: "bunchesaflowershop.com"
+      }
+    ],
+    otherServices: []
+  },
+  "new-york": {
+    name: "New York",
+    temples: [
+      {
+        name: "Zoroastrian Association of Greater New York",
+        address: "106 Pomona Road, Suffern, NY 10901",
+        phone: "(845) 362-2104",
+        website: "zagny.org",
+        contact: "secretary@zagny.org"
+      },
+      {
+        name: "Dar-e-Mehr Zoroastrian Temple",
+        address: "106 Pomona Road, Suffern, NY 10901",
+        phone: "(845) 362-2104",
+        website: "zagny.org/dar-e-mehr",
+        contact: "secretary@zagny.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Ferncliff Cemetery",
+        address: "280 Secor Rd, Hartsdale, NY 10530",
+        phone: "(914) 693-4700",
+        details: "Has a dedicated Zoroastrian section"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Westchester Funeral Home",
+        address: "190 Main St, Eastchester, NY 10709",
+        phone: "(914) 337-0500",
+        website: "westchesterfuneralhome.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Pervez Patel",
+        phone: "(845) 362-2104",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Blossom Flower Shop",
+        address: "275 Mamaroneck Ave, White Plains, NY 10605",
+        phone: "(914) 997-1187",
+        website: "blossomflower.com"
+      }
+    ],
+    otherServices: [
+      {
+        name: "Traditional Navjote Supplies",
+        type: "Ritual Supplies",
+        details: "Supplies for initiation ceremonies and other rituals",
+        contact: "supplies@zagny.org"
+      }
+    ]
   }
 };
 

@@ -18,7 +18,8 @@ const Services = () => {
     { name: "Vancouver", slug: "vancouver" },
     { name: "Toronto", slug: "toronto" },
     { name: "Houston", slug: "houston" },
-    { name: "Phoenix", slug: "phoenix" },
+    { name: "Chicago", slug: "chicago" },
+    { name: "New York", slug: "new-york" },
     { name: "Washington DC", slug: "washington-dc" }
   ];
 
