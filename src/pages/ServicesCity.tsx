@@ -2,22 +2,18 @@
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Hero from "@/components/home/Hero";
-import RitualIntro from "@/components/home/RitualIntro";
-import ServicesOverview from "@/components/home/ServicesOverview";
+import CityServices from "@/components/services/CityServices";
 
-const Index = () => {
+const ServicesCity = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow">
-        <Hero />
-        <RitualIntro />
-        <ServicesOverview />
+        <CityServices />
       </main>
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default ServicesCity;

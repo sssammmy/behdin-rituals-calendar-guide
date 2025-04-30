@@ -1,0 +1,230 @@
+
+import React from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+
+const Rituals = () => {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow">
+        <section className="bg-zoroastrian-light py-16">
+          <div className="container-custom">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="font-serif text-4xl md:text-5xl font-semibold text-zoroastrian-blue mb-6">
+                Zoroastrian Funeral Rituals
+              </h1>
+              <p className="text-gray-700 text-lg mb-6">
+                A comprehensive guide to the important ceremonies and prayers following the passing of a loved one.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="initial-prayers" className="py-16">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-8">
+                Initial Prayers and Ceremonies
+              </h2>
+              
+              <div className="prose max-w-none">
+                <p>
+                  When a Zoroastrian passes away, several important prayers and rituals should be performed immediately. 
+                  These ceremonies help guide the soul of the departed on its journey and provide comfort to the grieving family.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Sachkar Ceremony</h3>
+                <p>
+                  The Sachkar ceremony is one of the first rituals performed after death. This ceremony should ideally 
+                  be performed within the first few hours of passing. During this ceremony, the body is ritually washed 
+                  and prepared for funeral services.
+                </p>
+                <p>
+                  <strong>Who performs it:</strong> Traditionally performed by family members of the same gender as the deceased, 
+                  but in many communities outside Iran, this may be performed by funeral home professionals with guidance from a priest.
+                </p>
+                <p>
+                  <strong>Key prayers:</strong> Sarosh Baj, portions of the Avesta
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Geh Sarna</h3>
+                <p>
+                  This is a prayer ceremony performed before the funeral, usually at a funeral home or temple. The priest recites 
+                  prayers over the body before it is taken for funeral services.
+                </p>
+                <p>
+                  <strong>Timing:</strong> Usually performed within 24 hours of passing, but may vary based on local customs and practical considerations.
+                </p>
+                <p>
+                  <strong>Key prayers:</strong> Ahunavaiti Gatha, Ustavaiti Gatha, Sarosh Yasht
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Funeral Service</h3>
+                <p>
+                  The funeral service combines traditional Zoroastrian elements with local customs and regulations.
+                </p>
+                <p>
+                  <strong>Elements:</strong>
+                </p>
+                <ul className="list-disc pl-6 mb-6">
+                  <li>Recitation of prayers by priests (Mobeds)</li>
+                  <li>Eulogies and remembrances from family and friends</li>
+                  <li>Final viewing</li>
+                  <li>Committal ceremony</li>
+                </ul>
+                <p>
+                  <strong>Notes for services outside Iran:</strong> While traditional Zoroastrian practice involves exposure of the body (dakhmenashini), 
+                  in most countries outside Iran, burial or cremation is practiced. Most Zoroastrians in North America opt for cremation as it is closer to 
+                  the traditional practice of not polluting the earth with burial.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="memorial-services" className="py-16 bg-zoroastrian-cream/30">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-8">
+                Memorial Services
+              </h2>
+              
+              <div className="prose max-w-none">
+                <p>
+                  After the funeral, several memorial services are held at specific intervals. These are crucial ceremonies 
+                  in Zoroastrian tradition, marking the soul's journey after death.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Chahrum (Fourth Day Ceremony)</h3>
+                <p>
+                  The Chahrum is held on the fourth day after death, marking a significant transition for the soul. 
+                  According to Zoroastrian belief, the soul remains near the body for three days before crossing the 
+                  Chinvat Bridge on the fourth day, where it faces judgment.
+                </p>
+                <p>
+                  <strong>Timing:</strong> Dawn of the fourth day after passing
+                </p>
+                <p>
+                  <strong>Key prayers:</strong> Afringan, Baj, and Stum
+                </p>
+                <p>
+                  <strong>Significance:</strong> This is one of the most important ceremonies, as it marks the soul's judgment and transition to the spiritual realm.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Dahum (Tenth Day)</h3>
+                <p>
+                  This ceremony is performed on the tenth day after passing.
+                </p>
+                <p>
+                  <strong>Key prayers:</strong> Afringan, Baj, and Stum
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Siroza (Thirtieth Day)</h3>
+                <p>
+                  The Siroza ceremony is held on the thirtieth day after death, marking another important transition for the soul.
+                </p>
+                <p>
+                  <strong>Key prayers:</strong> Afringan, Baj, and Stum
+                </p>
+                <p>
+                  <strong>Notes:</strong> In some communities, this ceremony may be combined with a gathering where family and friends 
+                  share memories of the deceased and a communal meal.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="annual-remembrances" className="py-16">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-8">
+                Annual Remembrances
+              </h2>
+              
+              <div className="prose max-w-none">
+                <p>
+                  Zoroastrians continue to honor their departed loved ones through annual ceremonies and during 
+                  specific religious periods.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Salroz (Death Anniversary)</h3>
+                <p>
+                  The Salroz marks the anniversary of passing and is observed each year.
+                </p>
+                <p>
+                  <strong>Ceremonies:</strong> Jashan (thanksgiving ceremony), Afringan, and Baj
+                </p>
+                <p>
+                  <strong>Customs:</strong> Family may gather for prayers, visit the cemetery or crematorium, and share a meal in honor of the deceased.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Muktad (Fravardegan Days)</h3>
+                <p>
+                  The Muktad or Fravardegan days are the last ten days of the Zoroastrian calendar, dedicated to remembering 
+                  all the departed souls. These days are considered particularly sacred for commemorating ancestors.
+                </p>
+                <p>
+                  <strong>Timing:</strong> Last ten days of the Zoroastrian year (varies by calendar)
+                </p>
+                <p>
+                  <strong>Customs:</strong>
+                </p>
+                <ul className="list-disc pl-6 mb-6">
+                  <li>Homes and temples are thoroughly cleaned</li>
+                  <li>Flowers and food offerings are prepared</li>
+                  <li>Special prayers are recited daily</li>
+                  <li>Family members gather to honor departed souls</li>
+                </ul>
+                <p>
+                  <strong>Significance:</strong> It is believed that during this period, the fravashis (guardian spirits) of the 
+                  departed descend to earth and visit their families.
+                </p>
+                
+                <h3 className="text-2xl font-serif font-medium text-zoroastrian-blue mt-8 mb-4">Monthly Remembrances</h3>
+                <p>
+                  Some families also observe monthly remembrances, especially during the first year after passing.
+                </p>
+                <p>
+                  <strong>Customs:</strong> Lighting a lamp or candle, reciting prayers, or preparing the deceased's favorite food.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section className="py-16 bg-zoroastrian-light text-center">
+          <div className="container-custom">
+            <div className="max-w-2xl mx-auto">
+              <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-6">
+                Need Help Planning These Ceremonies?
+              </h2>
+              <p className="text-gray-700 mb-8">
+                Our calendar tool can help you organize and schedule all necessary rituals based on the date of passing. 
+                We can also connect you with local priests and resources.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <a 
+                  href="/calendar" 
+                  className="bg-zoroastrian-blue text-white px-8 py-3 rounded-md hover:bg-zoroastrian-blue/90 transition font-medium"
+                >
+                  Use Prayer Calendar
+                </a>
+                <a 
+                  href="/services" 
+                  className="bg-zoroastrian-gold text-zoroastrian-blue px-8 py-3 rounded-md hover:bg-zoroastrian-gold/90 transition font-medium"
+                >
+                  Find Local Services
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default Rituals;
