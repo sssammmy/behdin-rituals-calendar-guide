@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { 
@@ -20,7 +21,7 @@ import { Input } from "@/components/ui/input";
 // Sample data - in a real app, this would come from a database
 const citiesData: Record<string, {
   name: string;
-  temples: Array<{name: string; address: string; phone?: string; contact?: string}>;
+  temples: Array<{name: string; address: string; phone?: string; contact?: string; website?: string}>;
   cemeteries: Array<{name: string; address: string; phone?: string; details?: string}>;
   funeralHomes: Array<{name: string; address: string; phone?: string; website?: string}>;
   priests: Array<{name: string; phone?: string; email?: string; languages?: string[]}>;
@@ -34,7 +35,15 @@ const citiesData: Record<string, {
         name: "California Zoroastrian Center",
         address: "8952 Hazard Ave, Westminster, CA 92683",
         phone: "(714) 893-4737",
+        website: "czc.org",
         contact: "info@czc.org"
+      },
+      {
+        name: "Zoroastrian Association of California",
+        address: "1424 E Walnut Ave, Orange, CA 92867",
+        phone: "(714) 998-8012",
+        website: "zacla.org",
+        contact: "info@zacla.org"
       }
     ],
     cemeteries: [
@@ -43,22 +52,39 @@ const citiesData: Record<string, {
         address: "3888 Workman Mill Rd, Whittier, CA 90601",
         phone: "(562) 699-0921",
         details: "Has a dedicated Zoroastrian section"
-      }
-    ],
-    funeralHomes: [
+      },
       {
         name: "Forest Lawn Memorial Park",
         address: "1712 S Glendale Ave, Glendale, CA 91205",
         phone: "(888) 204-3131",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Forest Lawn Funeral Homes",
+        address: "1712 S Glendale Ave, Glendale, CA 91205",
+        phone: "(888) 204-3131",
         website: "forestlawn.com"
+      },
+      {
+        name: "Rose Hills Mortuary",
+        address: "3888 Workman Mill Rd, Whittier, CA 90601",
+        phone: "(562) 699-0921",
+        website: "rosehills.com"
       }
     ],
     priests: [
       {
         name: "Mobed Bahram Shahzadi",
-        phone: "(310) 555-1234",
-        email: "bshahzadi@example.com",
+        phone: "(714) 893-4737",
+        email: "bshahzadi@czc.org",
         languages: ["English", "Persian"]
+      },
+      {
+        name: "Mobed Zarrir Bhandara",
+        phone: "(714) 998-8012",
+        languages: ["English", "Persian", "Gujarati"]
       }
     ],
     flowerShops: [
@@ -67,6 +93,12 @@ const citiesData: Record<string, {
         address: "655 E Green St, Pasadena, CA 91101",
         phone: "(626) 449-0246",
         website: "jacobmaarse.com"
+      },
+      {
+        name: "Rose Hills Flower Shop",
+        address: "3888 Workman Mill Rd, Whittier, CA 90601",
+        phone: "(562) 699-0921",
+        website: "rosehills.com/flowers"
       }
     ],
     otherServices: [
@@ -75,23 +107,120 @@ const citiesData: Record<string, {
         type: "Ritual Supplies",
         details: "Supplies traditional sudra, kusti, and other ceremonial items",
         contact: "John Doe, (323) 555-6789"
+      },
+      {
+        name: "Zoroastrian Youth Group of Los Angeles",
+        type: "Community Support",
+        details: "Provides volunteer support for funeral and memorial services",
+        contact: "youth@zacla.org"
       }
     ]
+  },
+  "san-jose": {
+    name: "San Jose",
+    temples: [
+      {
+        name: "Zoroastrian Association of Northern California",
+        address: "1400 Parkside Dr, Sunnyvale, CA 94087",
+        phone: "(408) 446-0786",
+        website: "zanc.org",
+        contact: "info@zanc.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Oak Hill Memorial Park",
+        address: "300 Curtner Ave, San Jose, CA 95125",
+        phone: "(408) 297-2447",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Darling & Fischer Funeral Homes",
+        address: "471 E Santa Clara St, San Jose, CA 95112",
+        phone: "(408) 998-2226",
+        website: "darlingfischer.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Rustom Kanga",
+        phone: "(408) 446-0786",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Citti's Florist",
+        address: "2109 S Bascom Ave, Campbell, CA 95008",
+        phone: "(408) 371-9300",
+        website: "cittisflorist.com"
+      }
+    ],
+    otherServices: []
+  },
+  "orange-county": {
+    name: "Orange County",
+    temples: [
+      {
+        name: "California Zoroastrian Center",
+        address: "8952 Hazard Ave, Westminster, CA 92683",
+        phone: "(714) 893-4737",
+        website: "czc.org",
+        contact: "info@czc.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Pacific View Memorial Park",
+        address: "3500 Pacific View Drive, Corona Del Mar, CA 92625",
+        phone: "(949) 644-2700",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Pacific View Mortuary",
+        address: "3500 Pacific View Dr, Corona Del Mar, CA 92625",
+        phone: "(949) 644-2700",
+        website: "pacificviewmortuary.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Zarrir Bhandara",
+        phone: "(714) 998-8012",
+        languages: ["English", "Persian", "Gujarati"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Flowerfusion",
+        address: "18430 Brookhurst St, Fountain Valley, CA 92708",
+        phone: "(714) 962-8997",
+        website: "flowerfusionoc.com"
+      }
+    ],
+    otherServices: []
   },
   "san-diego": {
     name: "San Diego",
     temples: [
       {
-        name: "San Diego Zoroastrian Association",
-        address: "123 Main St, San Diego, CA 92101",
-        contact: "info@sdza.org"
+        name: "Zoroastrian Community of San Diego",
+        address: "8787 Complex Dr, San Diego, CA 92123",
+        phone: "(858) 565-0901",
+        website: "zcsd.org",
+        contact: "info@zcsd.org"
       }
     ],
     cemeteries: [
       {
         name: "Greenwood Memorial Park",
         address: "4300 Imperial Ave, San Diego, CA 92113",
-        phone: "(619) 264-3131"
+        phone: "(619) 264-3131",
+        details: "Accommodates Zoroastrian funeral practices"
       }
     ],
     funeralHomes: [
@@ -115,6 +244,94 @@ const citiesData: Record<string, {
         address: "7770 Regents Rd, San Diego, CA 92122",
         phone: "(858) 454-7374",
         website: "allensflowers.com"
+      }
+    ],
+    otherServices: []
+  },
+  "vancouver": {
+    name: "Vancouver",
+    temples: [
+      {
+        name: "Zoroastrian Society of British Columbia",
+        address: "6900 Halifax St, Burnaby, BC V5B 2R5, Canada",
+        phone: "(604) 420-3500",
+        website: "zsbc.org",
+        contact: "info@zsbc.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Valley View Memorial Gardens",
+        address: "14644 72 Ave, Surrey, BC V3S 2E7, Canada",
+        phone: "(604) 596-8866",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Hamilton Harron Funeral Home",
+        address: "5390 Fraser St, Vancouver, BC V5W 2Z3, Canada",
+        phone: "(604) 325-7441",
+        website: "hamiltonharron.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Ervad Yazdi",
+        phone: "(604) 420-3500",
+        languages: ["English", "Persian"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "GardenWorks",
+        address: "6250 Lougheed Hwy, Burnaby, BC V5B 2Z9, Canada",
+        phone: "(604) 299-0621",
+        website: "gardenworks.ca"
+      }
+    ],
+    otherServices: []
+  },
+  "washington-dc": {
+    name: "Washington DC",
+    temples: [
+      {
+        name: "Zoroastrian Association of Metropolitan Washington",
+        address: "20675 Fernbank Ct, Sterling, VA 20165",
+        phone: "(703) 444-9134",
+        website: "zamwi.org",
+        contact: "info@zamwi.org"
+      }
+    ],
+    cemeteries: [
+      {
+        name: "Rock Creek Cemetery",
+        address: "201 Allison St NW, Washington, DC 20011",
+        phone: "(202) 726-2080",
+        details: "Accommodates Zoroastrian funeral practices"
+      }
+    ],
+    funeralHomes: [
+      {
+        name: "Joseph Gawler's Sons Funeral Directors",
+        address: "5130 Wisconsin Ave NW, Washington, DC 20016",
+        phone: "(202) 966-6400",
+        website: "dignitymemorial.com"
+      }
+    ],
+    priests: [
+      {
+        name: "Mobed Mehraban Firouzgary",
+        phone: "(703) 444-9134",
+        languages: ["English", "Persian"]
+      }
+    ],
+    flowerShops: [
+      {
+        name: "Lee's Flower Shop",
+        address: "1026 U St NW, Washington, DC 20001",
+        phone: "(202) 265-4070",
+        website: "leesflowerandcard.com"
       }
     ],
     otherServices: []

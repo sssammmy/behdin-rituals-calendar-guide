@@ -12,6 +12,7 @@ import ServicesCity from "./pages/ServicesCity";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import HowTo from "./pages/HowTo";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/rituals" element={<Rituals />} />
+          <Route path="/how-to" element={<HowTo />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:city" element={<ServicesCity />} />
