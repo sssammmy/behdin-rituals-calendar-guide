@@ -9,8 +9,8 @@ const Hero = () => {
       
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="mx-auto w-24 h-24 mb-6">
-            {/* Fravahar symbol */}
+          <div className="mx-auto w-48 h-48 mb-6">
+            {/* Fravahar symbol - now 100% larger (from w-24 h-24 to w-48 h-48) */}
             <img 
               src="/lovable-uploads/3c453bc0-7fe0-4da1-98bc-8b8b4f961120.png" 
               alt="Fravahar" 

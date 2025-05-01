@@ -1,7 +1,8 @@
-
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, Info } from "lucide-react";
 
 const Rituals = () => {
   return (
@@ -21,12 +22,30 @@ const Rituals = () => {
           </div>
         </section>
 
+        <section className="py-6 bg-zoroastrian-cream/30">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <Alert className="border-zoroastrian-terracotta bg-zoroastrian-terracotta/10">
+                <AlertCircle className="h-4 w-4 text-zoroastrian-terracotta" />
+                <AlertTitle className="text-zoroastrian-terracotta font-medium font-serif">Important Dietary Practice</AlertTitle>
+                <AlertDescription className="text-gray-700">
+                  <p className="my-1">According to Zoroastrian traditions, relatives and friends of the deceased should refrain from eating any meat for the first 3 days after the death of a loved one.</p>
+                </AlertDescription>
+              </Alert>
+            </div>
+          </div>
+        </section>
+
         <section id="initial-prayers" className="py-16">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto">
-              <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-8">
-                Initial Prayers and Ceremonies
-              </h2>
+              <Alert className="mb-8 border-zoroastrian-blue bg-zoroastrian-blue/10">
+                <Info className="h-4 w-4 text-zoroastrian-blue" />
+                <AlertTitle className="text-zoroastrian-blue font-medium font-serif">Regional Differences in North America & Europe</AlertTitle>
+                <AlertDescription className="text-gray-700">
+                  <p className="my-1">Please note that the Sachkar Ceremony and Geh Sarna are usually not performed in the traditional manner in North America and Europe. The process of washing and clothing the body, as well as the timing of funeral services, is typically determined by local funeral homes, cemeteries, and customs. Always consult with local Zoroastrian priests for guidance on how to adapt these rituals.</p>
+                </AlertDescription>
+              </Alert>
               
               <div className="prose max-w-none">
                 <p>
