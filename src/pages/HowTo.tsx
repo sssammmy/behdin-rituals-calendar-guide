@@ -10,7 +10,8 @@ import {
   Droplets, 
   Shell, 
   Utensils, 
-  CandlestickChart
+  CandlestickChart,
+  Bowl
 } from "lucide-react";
 
 const HowTo = () => {
@@ -140,6 +141,18 @@ const HowTo = () => {
                         <h4 className="font-medium text-lg">Rose Water</h4>
                         <p className="text-gray-600">
                           Used for purification before and during certain ceremonies.
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="bg-zoroastrian-light p-3 rounded-full mr-4">
+                        <Bowl className="w-6 h-6 text-zoroastrian-blue" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-lg">Sir-o-Sedab</h4>
+                        <p className="text-gray-600">
+                          A traditional dish made from bread, vinegar, garlic, sugar, dried mint and a plant called Rue, served as part of the ceremonial offerings.
                         </p>
                       </div>
                     </div>

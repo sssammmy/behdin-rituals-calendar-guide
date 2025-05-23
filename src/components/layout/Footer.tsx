@@ -66,10 +66,10 @@ const Footer = () => {
           <div>
             <h3 className="font-serif text-lg font-semibold mb-4">Contact Us</h3>
             <p className="text-sm text-zoroastrian-cream mb-2">
-              Please reach out if you need guidance or support.
+              Please send any feedback or corrections to:
             </p>
-            <a href="mailto:info@behdinrituals.org" className="text-sm text-zoroastrian-cream hover:text-zoroastrian-gold transition block mb-1">
-              info@behdinrituals.org
+            <a href="mailto:sssammmy@gmail.com" className="text-sm text-zoroastrian-cream hover:text-zoroastrian-gold transition block mb-1">
+              sssammmy@gmail.com
             </a>
           </div>
         </div>
