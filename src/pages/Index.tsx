@@ -31,7 +31,7 @@ const Index = () => {
               </p>
               <Button 
                 className="bg-zoroastrian-terracotta hover:bg-zoroastrian-terracotta/90 text-white px-8 py-3 font-medium"
-                onClick={() => window.open('https://paypal.me/donate', '_blank')}
+                onClick={() => window.open('https://paypal.me/shahrammehraban', '_blank')}
               >
                 Make a Donation
               </Button>
