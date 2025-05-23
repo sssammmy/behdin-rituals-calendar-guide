@@ -11,7 +11,7 @@ import {
   Shell, 
   Utensils, 
   CandlestickChart,
-  Bowl
+  ChefHat
 } from "lucide-react";
 
 const HowTo = () => {
@@ -147,7 +147,7 @@ const HowTo = () => {
                     
                     <div className="flex items-start">
                       <div className="bg-zoroastrian-light p-3 rounded-full mr-4">
-                        <Bowl className="w-6 h-6 text-zoroastrian-blue" />
+                        <ChefHat className="w-6 h-6 text-zoroastrian-blue" />
                       </div>
                       <div>
                         <h4 className="font-medium text-lg">Sir-o-Sedab</h4>
