@@ -42,7 +42,7 @@ const RitualIntro = () => {
               <h3 className="font-serif text-xl font-semibold text-zoroastrian-blue mb-4">Memorial Services</h3>
               <p className="text-gray-700 text-sm mb-4">
                 Prayer ceremonies conducted on specific days after passing, including the important 
-                Chahrum, Doshmeh, and Siroza observances.
+                Chaarrome and Siroozeh observances.
               </p>
               <Link 
                 to="/rituals#memorial-services" 
@@ -55,7 +55,7 @@ const RitualIntro = () => {
             <div className="bg-zoroastrian-light p-6 rounded-lg animate-fade-in" style={{ animationDelay: "200ms" }}>
               <h3 className="font-serif text-xl font-semibold text-zoroastrian-blue mb-4">Annual Remembrances</h3>
               <p className="text-gray-700 text-sm mb-4">
-                Yearly ceremonies including Salroz (death anniversary) and the Muktad days to honor 
+                Yearly ceremonies including Salroz (death anniversary) and the roozeh-e-hamegani days to honor 
                 and remember departed souls.
               </p>
               <Link 
