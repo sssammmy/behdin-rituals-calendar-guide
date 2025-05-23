@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -87,8 +86,8 @@ const Contact = () => {
                   <div className="space-y-6">
                     <div>
                       <h3 className="font-serif text-xl font-medium text-zoroastrian-blue mb-2">Email</h3>
-                      <a href="mailto:info@behdinrituals.org" className="text-zoroastrian-blue hover:text-zoroastrian-gold transition">
-                        info@behdinrituals.org
+                      <a href="mailto:sssammmy@gmail.com" className="text-zoroastrian-blue hover:text-zoroastrian-gold transition">
+                        sssammmy@gmail.com
                       </a>
                     </div>
                     
@@ -99,10 +98,10 @@ const Contact = () => {
                         Please share them with us.
                       </p>
                       <a 
-                        href="mailto:resources@behdinrituals.org" 
+                        href="mailto:sssammmy@gmail.com" 
                         className="text-zoroastrian-blue hover:text-zoroastrian-gold transition"
                       >
-                        resources@behdinrituals.org
+                        sssammmy@gmail.com
                       </a>
                     </div>
                     

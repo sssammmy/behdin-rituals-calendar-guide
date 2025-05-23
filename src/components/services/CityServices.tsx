@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { 
@@ -44,6 +43,11 @@ const citiesData: Record<string, {
         phone: "(714) 998-8012",
         website: "zacla.org",
         contact: "info@zacla.org"
+      },
+      {
+        name: "Zoroastrian Temple",
+        address: "6515 De Soto Ave, Canoga Park, CA 91303",
+        phone: "(818) 610-8610"
       }
     ],
     cemeteries: [
@@ -99,6 +103,24 @@ const citiesData: Record<string, {
         address: "3888 Workman Mill Rd, Whittier, CA 90601",
         phone: "(562) 699-0921",
         website: "rosehills.com/flowers"
+      },
+      {
+        name: "Westside Florist",
+        address: "1321 Santa Monica Blvd, Santa Monica, CA 90404",
+        phone: "(310) 451-0030",
+        website: "westsideflorist.com"
+      },
+      {
+        name: "Valley Flowers",
+        address: "6200 Canoga Ave, Woodland Hills, CA 91367",
+        phone: "(818) 347-8840",
+        website: "valleyflowersla.com"
+      },
+      {
+        name: "Beverly Hills Flowers",
+        address: "9463 Little Santa Monica Blvd, Beverly Hills, CA 90210",
+        phone: "(310) 550-1000",
+        website: "beverlyhillsflowers.com"
       }
     ],
     otherServices: [
@@ -834,7 +856,7 @@ function ServiceList<T extends { name: string; address?: string; phone?: string;
                 {service.website && (
                   <div className="flex items-center">
                     <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m-9 9a9 9 0 019-9" />
                     </svg>
                     <a href={service.website.startsWith('http') ? service.website : `https://${service.website}`} target="_blank" rel="noopener noreferrer" className="text-zoroastrian-blue hover:underline">
                       {service.website}
