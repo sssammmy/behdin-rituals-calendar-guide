@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { convertToZoroastrianDate, formatZoroastrianDate, ZoroastrianDate } from "@/utils/zoroastrianCalendar";
 
 const formSchema = z.object({
   passingDate: z.date({
@@ -35,13 +36,16 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+interface CeremonyWithZoroastrianDate {
+  name: string;
+  description: string;
+  date: Date;
+  ritual: string;
+  zoroastrianDate: ZoroastrianDate;
+}
+
 const RitualCalendar = () => {
-  const [calendarData, setCalendarData] = useState<null | Array<{
-    name: string;
-    description: string;
-    date: Date;
-    ritual: string;
-  }>>(null);
+  const [calendarData, setCalendarData] = useState<null | Array<CeremonyWithZoroastrianDate>>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -52,10 +56,7 @@ const RitualCalendar = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    // In a real implementation, this would calculate sunrise/sunset times
-    // based on the location and generate exact prayer times
-    
-    // For now, we'll create a simulated calendar
+    // Enhanced ceremony calculations with Zoroastrian calendar integration
     const ceremonies = [
       {
         name: "Sachkar Ceremony",
@@ -64,7 +65,7 @@ const RitualCalendar = () => {
         ritual: "Prayers: Sarosh Baj, Patet Ravaan, Kardeh Avesta"
       },
       {
-        name: "Chahrum",
+        name: "Chaarrome",
         description: "Fourth day ceremony for the crossing of the soul",
         date: addDays(data.passingDate, 4),
         ritual: "Prayers: Afringan, Farokhshi, Satum"
@@ -76,7 +77,7 @@ const RitualCalendar = () => {
         ritual: "Prayers: Afringan, Baj, Satum"
       },
       {
-        name: "Siroza",
+        name: "Siroozeh",
         description: "Thirtieth day ceremony",
         date: addDays(data.passingDate, 30),
         ritual: "Prayers: Afringan, Farokhshi, Satum"
@@ -89,7 +90,13 @@ const RitualCalendar = () => {
       },
     ];
 
-    setCalendarData(ceremonies);
+    // Add Zoroastrian calendar information to each ceremony
+    const ceremoniesWithZoroastrian = ceremonies.map(ceremony => ({
+      ...ceremony,
+      zoroastrianDate: convertToZoroastrianDate(ceremony.date)
+    }));
+
+    setCalendarData(ceremoniesWithZoroastrian);
   };
 
   return (
@@ -101,7 +108,7 @@ const RitualCalendar = () => {
           </h2>
           <p className="text-gray-700 max-w-2xl mx-auto">
             Generate a customized calendar of rituals and prayers based on the date and time of passing.
-            This tool considers traditional Zoroastrian ceremonies and their timing.
+            This tool considers traditional Zoroastrian ceremonies, their timing, and includes Fasli calendar dates.
           </p>
         </div>
 
@@ -209,16 +216,21 @@ const RitualCalendar = () => {
               {calendarData.map((ceremony, index) => (
                 <Card key={index} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
                   <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between">
-                      <div>
+                    <div className="flex flex-col md:flex-row md:items-start justify-between">
+                      <div className="flex-1">
                         <h4 className="font-serif text-xl text-zoroastrian-blue font-semibold">{ceremony.name}</h4>
                         <p className="text-gray-600 mb-2">{ceremony.description}</p>
-                        <p className="text-sm text-zoroastrian-terracotta">{ceremony.ritual}</p>
+                        <p className="text-sm text-zoroastrian-terracotta mb-3">{ceremony.ritual}</p>
+                        <div className="bg-zoroastrian-light p-3 rounded-md">
+                          <p className="text-sm font-medium text-zoroastrian-blue mb-1">Zoroastrian Calendar:</p>
+                          <p className="text-sm text-gray-700">{formatZoroastrianDate(ceremony.zoroastrianDate)}</p>
+                        </div>
                       </div>
                       <div className="mt-4 md:mt-0 md:ml-4 text-right">
-                        <div className="inline-block bg-zoroastrian-light px-4 py-2 rounded-md text-center">
-                          <div className="text-sm text-gray-600">Date</div>
+                        <div className="inline-block bg-zoroastrian-light px-4 py-3 rounded-md text-center">
+                          <div className="text-sm text-gray-600">Gregorian Date</div>
                           <div className="font-medium">{format(ceremony.date, "MMMM d, yyyy")}</div>
+                          <div className="text-xs text-gray-500 mt-1">{format(ceremony.date, "EEEE")}</div>
                         </div>
                       </div>
                     </div>
@@ -236,6 +248,18 @@ const RitualCalendar = () => {
               >
                 Find Services
               </Button>
+            </div>
+            
+            <div className="mt-8 bg-zoroastrian-light p-6 rounded-lg">
+              <h4 className="text-lg font-medium text-zoroastrian-blue mb-3">About the Zoroastrian Calendar</h4>
+              <p className="text-sm text-gray-700 mb-2">
+                The Fasli calendar shown above aligns with the Gregorian calendar and accounts for leap years. 
+                The Zoroastrian year (Z.E. - Zoroastrian Era) begins on Nowruz (March 21st) and consists of 
+                12 months of 30 days each, plus 5-6 Gatha days at the end of the year.
+              </p>
+              <p className="text-xs text-gray-600">
+                * Calendar calculations include proper leap year adjustments for accurate ceremonial timing.
+              </p>
             </div>
           </div>
         )}
