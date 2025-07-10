@@ -22,6 +22,67 @@ const Rituals = () => {
           </div>
         </section>
 
+        {/* Death Ritual Observance Explanation */}
+        <section className="py-12 bg-white">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-gradient-to-r from-zoroastrian-blue/5 to-zoroastrian-gold/5 p-8 rounded-lg border border-zoroastrian-blue/20">
+                <h2 className="font-serif text-2xl font-semibold text-zoroastrian-blue mb-6">
+                  Explanation of Death Ritual Observance in the Zoroastrian Tradition
+                </h2>
+                
+                <div className="prose max-w-none text-gray-700">
+                  <p className="mb-4">
+                    In the Zoroastrian tradition, the day of a person's passing is observed according to the Zoroastrian calendar. 
+                    It begins at <strong>Hāvan Gāh</strong> (sunrise) on the day of death and continues until the end of 
+                    <strong>Ushahin Gāh</strong> (just before sunrise the following day).
+                  </p>
+                  
+                  <p className="mb-6">
+                    Once the date of passing is determined, the counting of days for ceremonies—such as the 3rd, 4th, 10th, 
+                    30th-day rituals, and annual memorial—starts from the day of death itself as <strong>Day 1</strong>. 
+                    The monthly <strong>Rōz-e</strong> (day-of-month) commemorations are also observed on the corresponding 
+                    Zoroastrian calendar day in the following months.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-zoroastrian-blue mb-4">
+                    Special Notes Regarding the Month of Esfand and the Five Gatha Days (Panjeh Māneh)
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="pl-4 border-l-4 border-zoroastrian-blue/30">
+                      <p className="font-medium text-zoroastrian-blue mb-2">🔹 If death occurs on any of the 30 regular days of the month of Esfand:</p>
+                      <ul className="list-disc list-inside space-y-1 ml-4">
+                        <li>The 30th-day ritual is observed exactly 30 days after the date of death.</li>
+                        <li>The monthly Rōz-e ceremonies continue to be observed on the same Zoroastrian calendar day in the following months.</li>
+                      </ul>
+                    </div>
+
+                    <div className="pl-4 border-l-4 border-zoroastrian-gold/50">
+                      <p className="font-medium text-zoroastrian-blue mb-2">🔹 If death occurs during the five Gatha days (Panjeh Māneh):</p>
+                      <ul className="list-disc list-inside space-y-1 ml-4">
+                        <li>The 30th-day ritual is also held exactly 30 days after the date of death.</li>
+                        <li>Since the Gatha days do not have corresponding days in the month of Farvardin, no Rōz-e is observed in that month.</li>
+                        <li>However, from the month of Ordibehesht onward, the Rōz-e is held each month on the same Farvardin day of the Zoroastrian calendar.</li>
+                        <li>The annual memorial is also observed in the following year on the same Gatha day as the original date of passing.</li>
+                      </ul>
+                    </div>
+
+                    <div className="pl-4 border-l-4 border-zoroastrian-terracotta/50">
+                      <p className="font-medium text-zoroastrian-blue mb-2">🔹 If death occurs on Avardād Day (the 30th day of Esfand during leap years):</p>
+                      <ul className="list-disc list-inside space-y-1 ml-4">
+                        <li>The 30th-day ritual is observed exactly 30 days later.</li>
+                        <li>The monthly Rōz-e is observed on the same Farvardin day in the following months.</li>
+                        <li>The annual memorial is held on the last Gatha day (Vehishtoish Gāh) in subsequent years.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="py-6 bg-zoroastrian-cream/30">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto">
