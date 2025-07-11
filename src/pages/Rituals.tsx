@@ -22,10 +22,69 @@ const Rituals = () => {
           </div>
         </section>
 
-        {/* Death Ritual Observance Explanation */}
+        {/* Persian Zoroastrian Funeral and Mourning Rituals */}
         <section className="py-12 bg-white">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto">
+              <div className="bg-gradient-to-r from-zoroastrian-blue/5 to-zoroastrian-gold/5 p-8 rounded-lg border border-zoroastrian-blue/20 mb-8">
+                <h2 className="font-serif text-3xl font-semibold text-zoroastrian-blue mb-4">
+                  Persian Zoroastrian Funeral and Mourning Rituals
+                </h2>
+                
+                <div className="prose max-w-none text-gray-700">
+                  <p className="text-lg mb-6 italic">
+                    This document provides a structured translation of Zoroastrian rituals and prayers related to death, funerals, and mourning. 
+                    These are based on the text compiled by the Anjoman-e-Mobedan Tehran, originally in Persian. This guide is intended for use 
+                    in a website helping Zoroastrians understand and observe end-of-life ceremonies for their loved ones.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-zoroastrian-blue mb-4">
+                    1. Immediate Steps After Death
+                  </h3>
+                  <p className="mb-4">
+                    Upon the passing of a Zoroastrian individual, the following actions are traditionally taken as soon as possible:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4 mb-6">
+                    <li>Close the eyes of the deceased and tie the feet and hands gently together.</li>
+                    <li>Cover the body with a clean white sheet.</li>
+                    <li>Place a lit oil lamp or candle and a pair of scissors near the head.</li>
+                    <li>Inform a Mobed (Zoroastrian priest) and begin preparations for the proper recitation of prayers.</li>
+                  </ul>
+
+                  <h3 className="text-xl font-semibold text-zoroastrian-blue mb-4">
+                    2. The Four-Day Ritual Cycle
+                  </h3>
+                  <p className="mb-6">
+                    Zoroastrian belief holds that the soul remains near the body for three nights and departs on the morning of the fourth day. 
+                    Rituals and prayers are conducted during this time to guide the soul toward the afterlife with dignity and light.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-zoroastrian-blue mb-4">
+                    3. Prayer Sequence Overview
+                  </h3>
+                  <ul className="list-disc list-inside space-y-2 ml-4 mb-6">
+                    <li><strong>Day 1:</strong> Srosh Baj - recited to comfort the soul and guard against evil.</li>
+                    <li><strong>Day 2:</strong> Continued recitation of Srosh Baj, followed by specific Avesta passages.</li>
+                    <li><strong>Day 3:</strong> Patet prayers (confession and repentance), special recitations for the deceased.</li>
+                    <li><strong>Day 4 Morning before sunrise:</strong> Final prayers, including the recitation of Yasna Haptanghaiti and other key verses. The soul is symbolically guided across the Chinvat Bridge.</li>
+                  </ul>
+
+                  <h3 className="text-xl font-semibold text-zoroastrian-blue mb-4">
+                    4. Post-Funeral Observances
+                  </h3>
+                  <p className="mb-4">
+                    Additional rituals such as Chahrom (4th day), Dahom (10th day), and Sal (1-year anniversary) are performed, 
+                    often with family and community present. These may include:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4 mb-6">
+                    <li>Lighting of the fire</li>
+                    <li>Offering of flowers and incense</li>
+                    <li>Recitation of Avesta passages</li>
+                    <li>Acts of charity in the name of the deceased</li>
+                  </ul>
+                </div>
+              </div>
+
               <div className="bg-gradient-to-r from-zoroastrian-blue/5 to-zoroastrian-gold/5 p-8 rounded-lg border border-zoroastrian-blue/20">
                 <h2 className="font-serif text-2xl font-semibold text-zoroastrian-blue mb-6">
                   Explanation of Death Ritual Observance in the Zoroastrian Tradition
