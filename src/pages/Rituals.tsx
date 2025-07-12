@@ -2,7 +2,9 @@ import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { AlertCircle, Info } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Rituals = () => {
   return (
@@ -138,12 +140,11 @@ const Rituals = () => {
                   </div>
                   
                   <div className="mt-6 pt-4 border-t border-zoroastrian-blue/20">
-                    <a 
-                      href="/calendar" 
-                      className="inline-flex items-center text-zoroastrian-blue hover:text-zoroastrian-blue/80 font-medium transition-colors"
-                    >
-                      Use Prayer Calendar Calculator →
-                    </a>
+                    <Link to="/calendar">
+                      <Button className="bg-zoroastrian-blue hover:bg-zoroastrian-blue/90 text-white px-8 py-3 font-medium">
+                        Use Prayer Calendar Calculator
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
