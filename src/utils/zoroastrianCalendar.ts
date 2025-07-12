@@ -11,7 +11,7 @@ const ZOROASTRIAN_DAYS = [
   "Ahura Mazda", "Vohu Mano", "Asha Vahishta", "Khshathra Vairya", "Spenta Armaiti", "Haurvatat",
   "Ameretat", "Dae-pa-Adar", "Adar", "Aban", "Khor", "Mah", "Tir", "Gosh", "Dae-pa-Mehr",
   "Mehr", "Srosh", "Rashn", "Farvardin", "Bahram", "Ram", "Bad", "Dae-pa-Din", "Din",
-  "Ashishvangh", "Marespand", "Anagran", "Zamyad", "Marespand", "Anagran"
+  "Ashishvangh", "Marespand", "Anagran", "Zamyad", "Maregozaran", "Anagran"
 ];
 
 // Additional days for Gatha period (5 days, 6 in leap years)
