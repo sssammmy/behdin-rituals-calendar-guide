@@ -107,9 +107,9 @@ export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
 
 export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
   // Convert to Shamsi year (Persian Solar Hijri calendar)
-  // Shamsi year = Gregorian year - 620 (accounting for the current year being 1404)
+  // Shamsi year = Gregorian year - 621 (to show 1404 for current year)
   const gregorianYear = zDate.gregorianDate.getFullYear();
-  const shamsiYear = gregorianYear - 620;
+  const shamsiYear = gregorianYear - 621;
   
   if (zDate.isGathaDay) {
     return `${zDate.gathaDay} (Gatha ${zDate.dayNumber}), ${shamsiYear} ش`;
