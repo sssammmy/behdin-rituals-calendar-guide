@@ -106,10 +106,13 @@ export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
 }
 
 export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
+  // Convert to Shamsi year (Persian Solar Hijri calendar)
+  const shamsiYear = zDate.zoroastrianYear - 1378 + 622;
+  
   if (zDate.isGathaDay) {
-    return `${zDate.gathaDay} (Gatha ${zDate.dayNumber}), ${zDate.zoroastrianYear} Z.E.`;
+    return `${zDate.gathaDay} (Gatha ${zDate.dayNumber}), ${shamsiYear} ش`;
   }
-  return `${zDate.zoroastrianDay}, ${zDate.zoroastrianMonth} ${zDate.dayNumber}, ${zDate.zoroastrianYear} Z.E.`;
+  return `${zDate.zoroastrianDay}, ${zDate.zoroastrianMonth} ${zDate.dayNumber}, ${shamsiYear} ش`;
 }
 
 export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 12): MonthlyRoze[] {
