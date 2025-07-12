@@ -87,7 +87,7 @@ const Rituals = () => {
 
               <div className="bg-gradient-to-r from-zoroastrian-blue/5 to-zoroastrian-gold/5 p-8 rounded-lg border border-zoroastrian-blue/20">
                 <h2 className="font-serif text-2xl font-semibold text-zoroastrian-blue mb-6">
-                  Explanation of Death Ritual Observance in the Zoroastrian Tradition
+                  Explanation of Timing of Prayers
                 </h2>
                 
                 <div className="prose max-w-none text-gray-700">
@@ -135,6 +135,15 @@ const Rituals = () => {
                         <li>The annual memorial is held on the last Gatha day (Vehishtoish Gāh) in subsequent years.</li>
                       </ul>
                     </div>
+                  </div>
+                  
+                  <div className="mt-6 pt-4 border-t border-zoroastrian-blue/20">
+                    <a 
+                      href="/calendar" 
+                      className="inline-flex items-center text-zoroastrian-blue hover:text-zoroastrian-blue/80 font-medium transition-colors"
+                    >
+                      Use Prayer Calendar Calculator →
+                    </a>
                   </div>
                 </div>
               </div>
