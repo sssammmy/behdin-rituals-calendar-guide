@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import HowTo from "./pages/HowTo";
+import AvestaStreams from "./pages/AvestaStreams";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:city" element={<ServicesCity />} />
+          <Route path="/avesta-streams" element={<AvestaStreams />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />

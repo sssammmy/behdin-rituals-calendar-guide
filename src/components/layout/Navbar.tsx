@@ -65,6 +65,9 @@ const Navbar = () => {
             <Link to="/services" className="text-zoroastrian-blue hover:text-zoroastrian-gold transition font-medium">
               Services
             </Link>
+            <Link to="/avesta-streams" className="text-zoroastrian-blue hover:text-zoroastrian-gold transition font-medium">
+              Avesta Streams
+            </Link>
             <Link to="/about" className="text-zoroastrian-blue hover:text-zoroastrian-gold transition font-medium">
               About
             </Link>
@@ -112,6 +115,13 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Services
+              </Link>
+              <Link 
+                to="/avesta-streams" 
+                className="text-zoroastrian-blue hover:text-zoroastrian-gold transition font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Avesta Streams
               </Link>
               <Link 
                 to="/about" 
