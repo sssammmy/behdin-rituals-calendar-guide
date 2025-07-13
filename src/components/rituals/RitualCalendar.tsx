@@ -62,7 +62,7 @@ const RitualCalendar = () => {
     // Enhanced ceremony calculations with Zoroastrian calendar integration
     const ceremonies = [
       {
-        name: "Rooze Dargozast",
+        name: "Rooz-e-Dargozasht",
         description: "Initial ritual performed shortly after passing (Day 1)",
         date: data.passingDate,
         ritual: "Prayers: Sarosh Baj, Patet Ravaan, Kardeh Avesta"
