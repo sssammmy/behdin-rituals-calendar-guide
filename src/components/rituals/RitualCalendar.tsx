@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -63,25 +62,25 @@ const RitualCalendar = () => {
     // Enhanced ceremony calculations with Zoroastrian calendar integration
     const ceremonies = [
       {
-        name: "Sachkar Ceremony",
+        name: "Rooze Dargozast",
         description: "Initial ritual performed shortly after passing (Day 1)",
         date: data.passingDate,
         ritual: "Prayers: Sarosh Baj, Patet Ravaan, Kardeh Avesta"
       },
       {
-        name: "Se-roozeh",
+        name: "Rooz-e-Sevvom",
         description: "Third day ceremony",
         date: addDays(data.passingDate, 2),
         ritual: "Prayers: Afringan, Baj, Satum"
       },
       {
-        name: "Chaarrome", 
+        name: "Rooz-e-Chaharom", 
         description: "Fourth day ceremony for the crossing of the soul",
         date: addDays(data.passingDate, 3),
         ritual: "Prayers: Afringan, Farokhshi, Satum"
       },
       {
-        name: "Dahm",
+        name: "Rooz-e-Dahhom",
         description: "Tenth day ceremony",
         date: addDays(data.passingDate, 9),
         ritual: "Prayers: Afringan, Baj, Satum"
@@ -93,7 +92,7 @@ const RitualCalendar = () => {
         ritual: "Prayers: Afringan, Farokhshi, Satum"
       },
       {
-        name: "Salroz",
+        name: "Salrooz",
         description: "First anniversary of passing",
         date: addDays(data.passingDate, 365),
         ritual: "Prayers: Afringan, Jashan, Satum"
