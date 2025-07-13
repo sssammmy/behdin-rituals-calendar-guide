@@ -11,7 +11,7 @@ const ZOROASTRIAN_DAYS = [
   "Ahura Mazda", "Vohu Mano", "Asha Vahishta", "Khshathra Vairya", "Spenta Armaiti", "Haurvatat",
   "Ameretat", "Dae-pa-Adar", "Adar", "Aban", "Khor", "Mah", "Tir", "Gosh", "Dae-pa-Mehr",
   "Mehr", "Srosh", "Rashn", "Farvardin", "Bahram", "Ram", "Bad", "Dae-pa-Din", "Din",
-  "Ashishvangh", "Marespand", "Anagran", "Zamyad", "Maregozaran", "Anagran"
+  "Ashtad", "Aasemaan", "Zamyad", "Mareshpand", "Anagran", "Anagran"
 ];
 
 // Additional days for Gatha period (5 days, 6 in leap years)
@@ -82,8 +82,10 @@ export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
   }
 
   // Regular months (12 months of 30 days each)
-  const monthNumber = Math.floor(daysSinceNowruz / 30) + 1;
-  const dayInMonth = (daysSinceNowruz % 30) + 1;
+  // Adding 1 to daysSinceNowruz because day 0 should be day 1
+  const totalDays = daysSinceNowruz + 1;
+  const monthNumber = Math.floor((totalDays - 1) / 30) + 1;
+  const dayInMonth = ((totalDays - 1) % 30) + 1;
   
   // Ensure we don't go beyond 12 months
   const adjustedMonth = Math.min(monthNumber, 12);
