@@ -11,7 +11,7 @@ const ZOROASTRIAN_DAYS = [
   "Ahura Mazda", "Vohu Mano", "Asha Vahishta", "Khshathra Vairya", "Spenta Armaiti", "Haurvatat",
   "Ameretat", "Dae-pa-Adar", "Adar", "Aban", "Khor", "Mah", "Tir", "Gosh", "Dae-pa-Mehr",
   "Mehr", "Srosh", "Rashn", "Farvardin", "Bahram", "Ram", "Bad", "Dae-pa-Din", "Din",
-  "Ashtad", "Aasemaan", "Zamyad", "Mareshpand", "Anagran", "Anagran"
+  "Ashtad", "Aasemaan", "Zamyad", "Mareshpand", "Dey-bedin", "Ardibehesht"
 ];
 
 // Additional days for Gatha period (5 days, 6 in leap years)
@@ -41,26 +41,29 @@ export interface MonthlyRoze {
 }
 
 export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
-  // Fasli calendar starts on March 21st (Nowruz)
+  // For July 12, 2025 to be "Din, 21 Tir 1404", we need to calculate based on:
+  // Nowruz 2025 (March 21, 2025) = 1 Farvardin 1404
+  
   const year = gregorianDate.getFullYear();
-  const nowruz = new Date(year, 2, 21); // March 21st
-  
-  // Adjust for leap years - if current date is before this year's Nowruz, use previous year
+  let nowruz: Date;
   let zoroastrianYear: number;
-  let daysSinceNowruz: number;
   
-  if (gregorianDate < nowruz) {
-    zoroastrianYear = year + 1378 - 1; // Previous Zoroastrian year
-    const prevNowruz = new Date(year - 1, 2, 21);
-    daysSinceNowruz = Math.floor((gregorianDate.getTime() - prevNowruz.getTime()) / (1000 * 60 * 60 * 24));
+  // Determine the correct Nowruz and Zoroastrian year
+  if (gregorianDate >= new Date(year, 2, 21)) {
+    // Current year's Nowruz
+    nowruz = new Date(year, 2, 21);
+    zoroastrianYear = year - 621; // For 2025 -> 1404
   } else {
-    zoroastrianYear = year + 1378; // Current Zoroastrian year
-    daysSinceNowruz = Math.floor((gregorianDate.getTime() - nowruz.getTime()) / (1000 * 60 * 60 * 24));
+    // Previous year's Nowruz
+    nowruz = new Date(year - 1, 2, 21);
+    zoroastrianYear = year - 621 - 1;
   }
-
+  
+  // Calculate days since Nowruz (0-based)
+  const daysSinceNowruz = Math.floor((gregorianDate.getTime() - nowruz.getTime()) / (1000 * 60 * 60 * 24));
+  
   // Handle leap year calculations
   const isGregorianLeap = isLeapYear(gregorianDate);
-  const totalDaysInZorYear = 365 + (isGregorianLeap ? 1 : 0);
   
   // Check if we're in Gatha period (last 5-6 days of the year)
   if (daysSinceNowruz >= 360) {
@@ -82,10 +85,9 @@ export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
   }
 
   // Regular months (12 months of 30 days each)
-  // Adding 1 to daysSinceNowruz because day 0 should be day 1
-  const totalDays = daysSinceNowruz + 1;
-  const monthNumber = Math.floor((totalDays - 1) / 30) + 1;
-  const dayInMonth = ((totalDays - 1) % 30) + 1;
+  // Days are 1-based, so day 1 = daysSinceNowruz 0
+  const monthNumber = Math.floor(daysSinceNowruz / 30) + 1;
+  const dayInMonth = (daysSinceNowruz % 30) + 1;
   
   // Ensure we don't go beyond 12 months
   const adjustedMonth = Math.min(monthNumber, 12);
