@@ -22,13 +22,26 @@ const GATHA_DAYS = [
 ];
 
 export interface ZoroastrianDate {
-  gregorianDate: Date;
-  zoroastrianYear: number;
-  zoroastrianMonth: string;
-  zoroastrianDay: string;
-  dayNumber: number;
-  monthNumber: number;
-  isGathaDay: boolean;
+  gregorianDate: string;
+  zoroastrianDate: string;
+  rozName: string;
+  isGatha: boolean;
+  nextMonthlyRooze: {
+    gregorian: string;
+    rozName: string;
+  };
+  salrooz: {
+    gregorian: string;
+    zoroastrian: string;
+    rozName: string;
+  };
+  // Legacy fields for backward compatibility
+  zoroastrianYear?: number;
+  zoroastrianMonth?: string;
+  zoroastrianDay?: string;
+  dayNumber?: number;
+  monthNumber?: number;
+  isGathaDay?: boolean;
   gathaDay?: string;
   isEsfandMonth?: boolean;
   isAvardadDay?: boolean;
@@ -43,58 +56,102 @@ export interface MonthlyRoze {
 }
 
 export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
-  const year = gregorianDate.getFullYear();
-  const baseYear = gregorianDate.getMonth() >= 2 && gregorianDate.getDate() >= 20 ? year : year - 1;
-  const baseDate = new Date(`${baseYear}-03-20`); // March 20 is day 0
-  
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const daysSinceNewYear = Math.floor((gregorianDate.getTime() - baseDate.getTime()) / msPerDay);
-  
-  const zoroastrianYear = baseYear - 621;
-  
-  // Check if we're in Gatha period (days 360+)
-  if (daysSinceNewYear >= 360) {
+  const gregDateStr = gregorianDate.toISOString().slice(0, 10);
+  return gregorianToZoroastrianFasliFull(gregDateStr);
+}
+
+function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
+  const inputDate = new Date(gregDateStr);
+  const inputUTC = new Date(Date.UTC(
+    inputDate.getFullYear(),
+    inputDate.getMonth(),
+    inputDate.getDate()
+  ));
+
+  // Adjust for new year base (March 20 = Day 0)
+  const baseYear = inputUTC.getUTCMonth() >= 2 && inputUTC.getUTCDate() >= 20
+    ? inputUTC.getUTCFullYear()
+    : inputUTC.getUTCFullYear() - 1;
+
+  const baseDate = new Date(Date.UTC(baseYear, 2, 20)); // March 20, UTC
+
+  const msPerDay = 86400000;
+  const daysSinceNewYear = Math.floor((inputUTC.getTime() - baseDate.getTime()) / msPerDay);
+
+  const monthNames = [
+    "Farvardin", "Ordibehesht", "Khordad", "Tir", "Amordad", "Shahrivar",
+    "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand"
+  ];
+
+  const rozNames = [
+    "Hormozd", "Bahman", "Ardibehesht", "Shahrivar", "Spandarmad",
+    "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
+    "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
+    "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
+    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
+    "Ard", "Ashtad", "Asman", "Zam", "Anagran"
+  ];
+
+  const gathaNames = ["Ahunavad", "Ushtavad", "Spentomad", "VohuKshathra", "Vehishtoish"];
+
+  let zoroastrianDate: string, rozName: string, isGatha: boolean;
+
+  if (daysSinceNewYear < 360) {
+    const monthIndex = Math.floor(daysSinceNewYear / 30);
+    const dayIndex = daysSinceNewYear % 30;
+    zoroastrianDate = `${monthNames[monthIndex]} ${dayIndex + 1}`;
+    rozName = rozNames[dayIndex];
+    isGatha = false;
+  } else {
     const gathaIndex = daysSinceNewYear - 360;
-    
-    if (gathaIndex < 5) {
-      return {
-        gregorianDate,
-        zoroastrianYear,
-        zoroastrianMonth: "Esfand",
-        zoroastrianDay: GATHA_DAYS[gathaIndex],
-        dayNumber: 31 + gathaIndex,
-        monthNumber: 12,
-        isGathaDay: true,
-        gathaDay: GATHA_DAYS[gathaIndex],
-        isEsfandMonth: true
-      };
-    }
+    zoroastrianDate = `Esfand ${31 + gathaIndex}`;
+    rozName = gathaNames[gathaIndex];
+    isGatha = true;
   }
-  
-  // Regular months (12 months of 30 days each)
-  const monthIndex = Math.floor(daysSinceNewYear / 30);
-  const dayIndex = daysSinceNewYear % 30;
-  
-  const isEsfandMonth = monthIndex === 11;
-  const isAvardadDay = false; // This calendar doesn't use Avardad Day concept
-  
+
+  // Compute next Monthly Rooz-e (30 days later on Gregorian)
+  const monthlyRoozeDate = new Date(inputUTC.getTime() + 30 * msPerDay);
+
+  // Compute Salrooz: same number of days after March 20 next year
+  const nextBaseDate = new Date(Date.UTC(baseYear + 1, 2, 20)); // March 20 next year
+  const salroozDate = new Date(nextBaseDate.getTime() + daysSinceNewYear * msPerDay);
+
+  // Legacy compatibility fields
+  const monthIndex = daysSinceNewYear < 360 ? Math.floor(daysSinceNewYear / 30) : 11;
+  const dayIndex = daysSinceNewYear < 360 ? daysSinceNewYear % 30 : (daysSinceNewYear - 360);
+  const zoroastrianYear = baseYear - 621;
+
   return {
-    gregorianDate,
+    gregorianDate: inputUTC.toISOString().slice(0, 10),
+    zoroastrianDate,
+    rozName,
+    isGatha,
+    nextMonthlyRooze: {
+      gregorian: monthlyRoozeDate.toISOString().slice(0, 10),
+      rozName: rozName
+    },
+    salrooz: {
+      gregorian: salroozDate.toISOString().slice(0, 10),
+      zoroastrian: zoroastrianDate,
+      rozName: rozName
+    },
+    // Legacy fields for backward compatibility
     zoroastrianYear,
-    zoroastrianMonth: ZOROASTRIAN_MONTHS[monthIndex],
-    zoroastrianDay: ZOROASTRIAN_DAYS[dayIndex],
+    zoroastrianMonth: monthNames[monthIndex],
+    zoroastrianDay: rozName,
     dayNumber: dayIndex + 1,
     monthNumber: monthIndex + 1,
-    isGathaDay: false,
-    isEsfandMonth,
-    isAvardadDay
+    isGathaDay: isGatha,
+    gathaDay: isGatha ? rozName : undefined,
+    isEsfandMonth: monthIndex === 11,
+    isAvardadDay: false
   };
 }
 
 export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
   // Convert to Shamsi year (Persian Solar Hijri calendar)
   // Shamsi year = Gregorian year - 621 (to show 1404 for current year)
-  const gregorianYear = zDate.gregorianDate.getFullYear();
+  const gregorianYear = new Date(zDate.gregorianDate).getFullYear();
   const shamsiYear = gregorianYear - 621;
   
   if (zDate.isGathaDay) {
