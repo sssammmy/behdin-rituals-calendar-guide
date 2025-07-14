@@ -12,7 +12,7 @@ const ZOROASTRIAN_DAYS = [
   "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
   "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
   "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
-  "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
+  "Bahram", "Ram", "Govad", "Dae-pa-Den", "Din",
   "Ard", "Ashtad", "Asman", "Zam", "Anagran"
 ];
 
@@ -57,7 +57,10 @@ export interface MonthlyRoze {
 
 export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
   const gregDateStr = gregorianDate.toISOString().slice(0, 10);
-  return gregorianToZoroastrianFasliFull(gregDateStr);
+  console.log('Converting date:', gregDateStr);
+  const result = gregorianToZoroastrianFasliFull(gregDateStr);
+  console.log('Conversion result:', result);
+  return result;
 }
 
 function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
@@ -88,7 +91,7 @@ function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
     "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
     "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
     "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
-    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
+    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Din",
     "Ard", "Ashtad", "Asman", "Zam", "Anagran"
   ];
 
