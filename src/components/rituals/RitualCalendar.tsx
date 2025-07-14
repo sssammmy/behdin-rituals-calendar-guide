@@ -262,7 +262,7 @@ const RitualCalendar = () => {
                           <p className="text-gray-600 mb-2">{ceremony.description}</p>
                           <p className="text-sm text-zoroastrian-terracotta mb-3">{ceremony.ritual}</p>
                           <div className="bg-zoroastrian-light p-3 rounded-md">
-                            <p className="text-sm font-medium text-zoroastrian-blue mb-1">Zoroastrian Calendar:</p>
+                            <p className="text-sm font-medium text-zoroastrian-blue mb-1">Zoroastrian Day:</p>
                             <p className="text-sm text-gray-700">{formatZoroastrianDate(ceremony.zoroastrianDate)}</p>
                           </div>
                         </div>
