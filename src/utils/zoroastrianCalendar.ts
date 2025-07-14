@@ -150,14 +150,14 @@ function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
 
 export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
   // Convert to Shamsi year (Persian Solar Hijri calendar)
-  // Shamsi year = Gregorian year - 621 (to show 1404 for current year)
   const gregorianYear = new Date(zDate.gregorianDate).getFullYear();
   const shamsiYear = gregorianYear - 621;
   
-  if (zDate.isGathaDay) {
-    return `${zDate.gathaDay} (Gatha ${zDate.dayNumber}), ${shamsiYear} ش`;
+  // Use the new data structure format
+  if (zDate.isGatha) {
+    return `${zDate.rozName} (Gatha), ${shamsiYear} ش`;
   }
-  return `${zDate.zoroastrianDay}, ${zDate.zoroastrianMonth} ${zDate.dayNumber}, ${shamsiYear} ش`;
+  return `${zDate.rozName}, ${zDate.zoroastrianDate}, ${shamsiYear} ش`;
 }
 
 export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 12): MonthlyRoze[] {
