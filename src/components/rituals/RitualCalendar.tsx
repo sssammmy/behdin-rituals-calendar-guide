@@ -56,8 +56,20 @@ const RitualCalendar = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    const deathZoroastrianDate = convertToZoroastrianDate(data.passingDate);
+  const onSubmit = async (data: FormValues) => {
+    // Parse location to get city and state
+    const locationParts = data.location.split(',').map(part => part.trim());
+    const city = locationParts[0] || '';
+    const state = locationParts[1] || '';
+    
+    const passingDateTime = new Date(`${data.passingDate.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
+    
+    // Convert passing date to Zoroastrian calendar
+    const deathZoroastrianDate = await convertToZoroastrianDate({
+      deathDateTimeLocal: passingDateTime.toISOString(),
+      city: city,
+      state: state
+    });
     
     // Enhanced ceremony calculations with Zoroastrian calendar integration
     const ceremonies = [
@@ -100,13 +112,23 @@ const RitualCalendar = () => {
     ];
 
     // Add Zoroastrian calendar information to each ceremony
-    const ceremoniesWithZoroastrian = ceremonies.map(ceremony => ({
-      ...ceremony,
-      zoroastrianDate: convertToZoroastrianDate(ceremony.date)
-    }));
+    const ceremoniesWithZoroastrian = [];
+    for (const ceremony of ceremonies) {
+      const ceremonyDateTime = new Date(`${ceremony.date.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
+      const zoroastrianDate = await convertToZoroastrianDate({
+        deathDateTimeLocal: ceremonyDateTime.toISOString(),
+        city: city,
+        state: state
+      });
+      
+      ceremoniesWithZoroastrian.push({
+        ...ceremony,
+        zoroastrianDate
+      });
+    }
 
     // Calculate monthly Rōz-e ceremonies
-    const monthlyRoze = calculateMonthlyRoze(data.passingDate, 12);
+    const monthlyRoze = await calculateMonthlyRoze(passingDateTime, city, state, 12);
     
     // Get special case notes
     const notes = getSpecialCaseNotes(deathZoroastrianDate);

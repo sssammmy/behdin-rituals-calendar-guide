@@ -55,25 +55,74 @@ export interface MonthlyRoze {
   reason?: string;
 }
 
-export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
-  const gregDateStr = gregorianDate.toISOString().slice(0, 10);
-  console.log('Converting date:', gregDateStr);
-  const result = gregorianToZoroastrianFasliFull(gregDateStr);
+export async function convertToZoroastrianDate(input: { deathDateTimeLocal: string; city: string; state: string }): Promise<ZoroastrianDate> {
+  console.log('Converting date:', input);
+  const result = await zoroastrianDeathCalendar(input);
   console.log('Conversion result:', result);
-  return result;
+  
+  // Convert to ZoroastrianDate format for backward compatibility
+  const monthIndex = result.zoroastrianDate.includes('Esfand') ? 11 : 
+    ZOROASTRIAN_MONTHS.findIndex(month => result.zoroastrianDate.includes(month));
+  const dayMatch = result.zoroastrianDate.match(/\d+/);
+  const dayNumber = dayMatch ? parseInt(dayMatch[0]) : 1;
+  const zoroastrianYear = parseInt(result.adjustedGregorianDate.substring(0, 4)) - 621;
+
+  return {
+    gregorianDate: result.adjustedGregorianDate,
+    zoroastrianDate: result.zoroastrianDate,
+    rozName: result.rozName,
+    isGatha: result.isGatha,
+    nextMonthlyRooze: result.nextMonthlyRooze,
+    salrooz: result.salrooz,
+    // Legacy fields for backward compatibility
+    zoroastrianYear,
+    zoroastrianMonth: ZOROASTRIAN_MONTHS[monthIndex],
+    zoroastrianDay: result.rozName,
+    dayNumber,
+    monthNumber: monthIndex + 1,
+    isGathaDay: result.isGatha,
+    gathaDay: result.isGatha ? result.rozName : undefined,
+    isEsfandMonth: monthIndex === 11,
+    isAvardadDay: false
+  };
 }
 
-function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
-  const input = new Date(gregDateStr);
-  const inputUTC = new Date(Date.UTC(input.getFullYear(), input.getMonth(), input.getDate()));
+async function zoroastrianDeathCalendar(input: { deathDateTimeLocal: string; city: string; state: string }) {
+  const { deathDateTimeLocal, city, state } = input;
 
-  const msPerDay = 86400000;
-  const baseYear = inputUTC.getUTCMonth() > 2 || (inputUTC.getUTCMonth() === 2 && inputUTC.getUTCDate() >= 20)
-    ? inputUTC.getUTCFullYear()
-    : inputUTC.getUTCFullYear() - 1;
+  // Step 1: Get lat/lon from city + state
+  const locationResp = await fetch(`https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&country=USA&format=json`);
+  const locationData = await locationResp.json();
+  if (!locationData || locationData.length === 0) {
+    return { error: "City and state could not be geocoded." };
+  }
+  const lat = locationData[0].lat;
+  const lon = locationData[0].lon;
 
-  const baseDate = new Date(Date.UTC(baseYear, 2, 20)); // March 20 UTC
-  const daysSinceNewYear = Math.floor((inputUTC.getTime() - baseDate.getTime()) / msPerDay);
+  // Step 2: Convert deathDateTimeLocal to UTC
+  const localDate = new Date(deathDateTimeLocal);
+  const deathDateUTC = new Date(localDate.toISOString());
+
+  const deathDateISO = deathDateUTC.toISOString().slice(0, 10); // YYYY-MM-DD
+
+  // Step 3: Get sunrise time in UTC for that location
+  const sunriseResp = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${deathDateISO}&formatted=0`);
+  const sunriseData = await sunriseResp.json();
+  const sunriseUTC = new Date(sunriseData.results.sunrise);
+
+  // Step 4: Adjust date if before sunrise
+  let effectiveUTC = deathDateUTC;
+  if (deathDateUTC < sunriseUTC) {
+    effectiveUTC = new Date(deathDateUTC.getTime() - 86400000); // subtract 1 day
+  }
+
+  // Step 5: Zoroastrian calendar logic
+  const baseYear = effectiveUTC.getUTCMonth() > 2 || (effectiveUTC.getUTCMonth() === 2 && effectiveUTC.getUTCDate() >= 21)
+    ? effectiveUTC.getUTCFullYear()
+    : effectiveUTC.getUTCFullYear() - 1;
+
+  const baseDate = new Date(Date.UTC(baseYear, 2, 21)); // March 21
+  const daysSinceNewYear = Math.floor((effectiveUTC.getTime() - baseDate.getTime()) / 86400000);
 
   const monthNames = [
     "Farvardin", "Ordibehesht", "Khordad", "Tir", "Amordad", "Shahrivar",
@@ -91,58 +140,43 @@ function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
 
   const gathaNames = ["Ahunavad", "Ushtavad", "Spentomad", "VohuKshathra", "Vehishtoish"];
 
-  let month = "";
-  let day = 0;
+  let zoroastrianDate = "";
   let rozName = "";
   let isGatha = false;
-  let zoroastrianDate = "";
 
   if (daysSinceNewYear < 360) {
     const monthIndex = Math.floor(daysSinceNewYear / 30);
     const dayIndex = daysSinceNewYear % 30;
-    month = monthNames[monthIndex];
-    day = dayIndex + 1;
+    zoroastrianDate = `${monthNames[monthIndex]} ${dayIndex + 1}`;
     rozName = rozNames[dayIndex];
-    zoroastrianDate = `${month} ${day}`;
   } else {
     const gathaIndex = daysSinceNewYear - 360;
-    rozName = gathaNames[gathaIndex];
     zoroastrianDate = `Esfand ${31 + gathaIndex}`;
+    rozName = gathaNames[gathaIndex];
     isGatha = true;
   }
 
-  const nextMonthlyRooze = new Date(inputUTC.getTime() + 30 * msPerDay);
-  const nextSalrooz = new Date(Date.UTC(baseYear + 1, 2, 20) + daysSinceNewYear * msPerDay);
-
-  // Legacy compatibility fields
-  const monthIndex = daysSinceNewYear < 360 ? Math.floor(daysSinceNewYear / 30) : 11;
-  const dayIndex = daysSinceNewYear < 360 ? daysSinceNewYear % 30 : (daysSinceNewYear - 360);
-  const zoroastrianYear = baseYear - 621;
+  const msPerDay = 86400000;
+  const nextMonthlyRooze = new Date(effectiveUTC.getTime() + 30 * msPerDay);
+  const salroozBase = new Date(Date.UTC(baseYear + 1, 2, 21));
+  const salroozDate = new Date(salroozBase.getTime() + daysSinceNewYear * msPerDay);
 
   return {
-    gregorianDate: inputUTC.toISOString().slice(0, 10),
-    zoroastrianDate: zoroastrianDate,
-    rozName: rozName,
-    isGatha: isGatha,
+    adjustedGregorianDate: effectiveUTC.toISOString().slice(0, 10),
+    city: city,
+    state: state,
+    zoroastrianDate,
+    rozName,
+    isGatha,
     nextMonthlyRooze: {
       gregorian: nextMonthlyRooze.toISOString().slice(0, 10),
       rozName: rozName
     },
     salrooz: {
-      gregorian: nextSalrooz.toISOString().slice(0, 10),
+      gregorian: salroozDate.toISOString().slice(0, 10),
       zoroastrian: zoroastrianDate,
       rozName: rozName
-    },
-    // Legacy fields for backward compatibility
-    zoroastrianYear,
-    zoroastrianMonth: monthNames[monthIndex],
-    zoroastrianDay: rozName,
-    dayNumber: dayIndex + 1,
-    monthNumber: monthIndex + 1,
-    isGathaDay: isGatha,
-    gathaDay: isGatha ? rozName : undefined,
-    isEsfandMonth: monthIndex === 11,
-    isAvardadDay: false
+    }
   };
 }
 
@@ -151,8 +185,12 @@ export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
   return zDate.rozName;
 }
 
-export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 12): MonthlyRoze[] {
-  const deathZoroastrianDate = convertToZoroastrianDate(deathDate);
+export async function calculateMonthlyRoze(deathDate: Date, city: string, state: string, numberOfMonths: number = 12): Promise<MonthlyRoze[]> {
+  const deathZoroastrianDate = await convertToZoroastrianDate({
+    deathDateTimeLocal: deathDate.toISOString(),
+    city: city,
+    state: state
+  });
   const monthlyRoze: MonthlyRoze[] = [];
 
   // If death occurs during Gatha days
@@ -171,10 +209,16 @@ export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 1
       const monthDate = addMonths(deathDate, i);
       const correspondingDay = deathZoroastrianDate.dayNumber; // Use same day number
       
+      const monthZoroastrianDate = await convertToZoroastrianDate({
+        deathDateTimeLocal: monthDate.toISOString(),
+        city: city,
+        state: state
+      });
+      
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1],
         gregorianDate: monthDate,
-        zoroastrianDate: convertToZoroastrianDate(monthDate)
+        zoroastrianDate: monthZoroastrianDate
       });
     }
   } 
@@ -184,10 +228,16 @@ export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 1
     for (let i = 1; i <= numberOfMonths; i++) {
       const monthDate = addMonths(deathDate, i);
       
+      const monthZoroastrianDate = await convertToZoroastrianDate({
+        deathDateTimeLocal: monthDate.toISOString(),
+        city: city,
+        state: state
+      });
+      
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1] || `Month ${i}`,
         gregorianDate: monthDate,
-        zoroastrianDate: convertToZoroastrianDate(monthDate)
+        zoroastrianDate: monthZoroastrianDate
       });
     }
   }
@@ -196,10 +246,16 @@ export function calculateMonthlyRoze(deathDate: Date, numberOfMonths: number = 1
     for (let i = 1; i <= numberOfMonths; i++) {
       const monthDate = addMonths(deathDate, i);
       
+      const monthZoroastrianDate = await convertToZoroastrianDate({
+        deathDateTimeLocal: monthDate.toISOString(),
+        city: city,
+        state: state
+      });
+      
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1] || `Month ${i}`,
         gregorianDate: monthDate,
-        zoroastrianDate: convertToZoroastrianDate(monthDate)
+        zoroastrianDate: monthZoroastrianDate
       });
     }
   }
