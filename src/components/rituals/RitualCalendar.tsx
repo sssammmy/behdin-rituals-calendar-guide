@@ -47,6 +47,7 @@ const RitualCalendar = () => {
   const [calendarData, setCalendarData] = useState<null | Array<CeremonyWithZoroastrianDate>>(null);
   const [monthlyRozeData, setMonthlyRozeData] = useState<null | Array<MonthlyRoze>>(null);
   const [specialNotes, setSpecialNotes] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -57,85 +58,98 @@ const RitualCalendar = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    // Parse location to get city and state
-    const locationParts = data.location.split(',').map(part => part.trim());
-    const city = locationParts[0] || '';
-    const state = locationParts[1] || '';
-    
-    const passingDateTime = new Date(`${data.passingDate.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
-    
-    // Convert passing date to Zoroastrian calendar
-    const deathZoroastrianDate = await convertToZoroastrianDate({
-      deathDateTimeLocal: passingDateTime.toISOString(),
-      city: city,
-      state: state
-    });
-    
-    // Enhanced ceremony calculations with Zoroastrian calendar integration
-    const ceremonies = [
-      {
-        name: "Rooz-e-Dargozasht",
-        description: "Initial ritual performed shortly after passing (Day 1)",
-        date: data.passingDate,
-        ritual: "Prayers: Sarosh Baj, Patet Ravaan, Kardeh Avesta"
-      },
-      {
-        name: "Rooz-e-Sevvom",
-        description: "Third day ceremony",
-        date: addDays(data.passingDate, 2),
-        ritual: "Prayers: Afringan, Baj, Satum"
-      },
-      {
-        name: "Rooz-e-Chaharom", 
-        description: "Fourth day ceremony for the crossing of the soul",
-        date: addDays(data.passingDate, 3),
-        ritual: "Prayers: Afringan, Farokhshi, Satum"
-      },
-      {
-        name: "Rooz-e-Dahhom",
-        description: "Tenth day ceremony",
-        date: addDays(data.passingDate, 9),
-        ritual: "Prayers: Afringan, Baj, Satum"
-      },
-      {
-        name: "Siroozeh",
-        description: "Thirtieth day ceremony",
-        date: addDays(data.passingDate, 29),
-        ritual: "Prayers: Afringan, Farokhshi, Satum"
-      },
-      {
-        name: "Salrooz",
-        description: "First anniversary of passing",
-        date: addDays(data.passingDate, 365),
-        ritual: "Prayers: Afringan, Jashan, Satum"
-      },
-    ];
-
-    // Add Zoroastrian calendar information to each ceremony
-    const ceremoniesWithZoroastrian = [];
-    for (const ceremony of ceremonies) {
-      const ceremonyDateTime = new Date(`${ceremony.date.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
-      const zoroastrianDate = await convertToZoroastrianDate({
-        deathDateTimeLocal: ceremonyDateTime.toISOString(),
+    try {
+      setIsLoading(true);
+      
+      // Parse location to get city and state
+      const locationParts = data.location.split(',').map(part => part.trim());
+      const city = locationParts[0] || '';
+      const state = locationParts[1] || '';
+      
+      if (!city || !state) {
+        throw new Error("Please enter both city and state (e.g., Los Angeles, CA)");
+      }
+      
+      const passingDateTime = new Date(`${data.passingDate.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
+      
+      // Convert passing date to Zoroastrian calendar
+      const deathZoroastrianDate = await convertToZoroastrianDate({
+        deathDateTimeLocal: passingDateTime.toISOString(),
         city: city,
         state: state
       });
       
-      ceremoniesWithZoroastrian.push({
-        ...ceremony,
-        zoroastrianDate
-      });
+      // Enhanced ceremony calculations with Zoroastrian calendar integration
+      const ceremonies = [
+        {
+          name: "Rooz-e-Dargozasht",
+          description: "Initial ritual performed shortly after passing (Day 1)",
+          date: data.passingDate,
+          ritual: "Prayers: Sarosh Baj, Patet Ravaan, Kardeh Avesta"
+        },
+        {
+          name: "Rooz-e-Sevvom",
+          description: "Third day ceremony",
+          date: addDays(data.passingDate, 2),
+          ritual: "Prayers: Afringan, Baj, Satum"
+        },
+        {
+          name: "Rooz-e-Chaharom", 
+          description: "Fourth day ceremony for the crossing of the soul",
+          date: addDays(data.passingDate, 3),
+          ritual: "Prayers: Afringan, Farokhshi, Satum"
+        },
+        {
+          name: "Rooz-e-Dahhom",
+          description: "Tenth day ceremony",
+          date: addDays(data.passingDate, 9),
+          ritual: "Prayers: Afringan, Baj, Satum"
+        },
+        {
+          name: "Siroozeh",
+          description: "Thirtieth day ceremony",
+          date: addDays(data.passingDate, 29),
+          ritual: "Prayers: Afringan, Farokhshi, Satum"
+        },
+        {
+          name: "Salrooz",
+          description: "First anniversary of passing",
+          date: addDays(data.passingDate, 365),
+          ritual: "Prayers: Afringan, Jashan, Satum"
+        },
+      ];
+
+      // Add Zoroastrian calendar information to each ceremony
+      const ceremoniesWithZoroastrian = [];
+      for (const ceremony of ceremonies) {
+        const ceremonyDateTime = new Date(`${ceremony.date.toISOString().slice(0, 10)}T${data.passingTime || '12:00'}`);
+        const zoroastrianDate = await convertToZoroastrianDate({
+          deathDateTimeLocal: ceremonyDateTime.toISOString(),
+          city: city,
+          state: state
+        });
+        
+        ceremoniesWithZoroastrian.push({
+          ...ceremony,
+          zoroastrianDate
+        });
+      }
+
+      // Calculate monthly Rōz-e ceremonies
+      const monthlyRoze = await calculateMonthlyRoze(passingDateTime, city, state, 12);
+      
+      // Get special case notes
+      const notes = getSpecialCaseNotes(deathZoroastrianDate);
+
+      setCalendarData(ceremoniesWithZoroastrian);
+      setMonthlyRozeData(monthlyRoze);
+      setSpecialNotes(notes);
+    } catch (error) {
+      console.error('Error generating calendar:', error);
+      // You could add a toast notification here
+    } finally {
+      setIsLoading(false);
     }
-
-    // Calculate monthly Rōz-e ceremonies
-    const monthlyRoze = await calculateMonthlyRoze(passingDateTime, city, state, 12);
-    
-    // Get special case notes
-    const notes = getSpecialCaseNotes(deathZoroastrianDate);
-
-    setCalendarData(ceremoniesWithZoroastrian);
-    setMonthlyRozeData(monthlyRoze);
-    setSpecialNotes(notes);
   };
 
   return (
@@ -236,9 +250,10 @@ const RitualCalendar = () => {
                 <div className="text-center">
                   <Button
                     type="submit"
-                    className="bg-zoroastrian-blue hover:bg-zoroastrian-blue/90 text-white"
+                    disabled={isLoading}
+                    className="bg-zoroastrian-blue hover:bg-zoroastrian-blue/90 text-white disabled:opacity-50"
                   >
-                    Generate Calendar
+                    {isLoading ? "Generating Calendar..." : "Generate Calendar"}
                   </Button>
                 </div>
               </form>
