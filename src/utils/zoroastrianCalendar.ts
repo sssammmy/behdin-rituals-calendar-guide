@@ -12,7 +12,7 @@ const ZOROASTRIAN_DAYS = [
   "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
   "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
   "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
-  "Bahram", "Ram", "Govad", "Dae-pa-Den", "Din",
+  "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
   "Ard", "Ashtad", "Asman", "Zam", "Anagran"
 ];
 
@@ -64,21 +64,15 @@ export function convertToZoroastrianDate(gregorianDate: Date): ZoroastrianDate {
 }
 
 function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
-  const inputDate = new Date(gregDateStr);
-  const inputUTC = new Date(Date.UTC(
-    inputDate.getFullYear(),
-    inputDate.getMonth(),
-    inputDate.getDate()
-  ));
+  const input = new Date(gregDateStr);
+  const inputUTC = new Date(Date.UTC(input.getFullYear(), input.getMonth(), input.getDate()));
 
-  // Adjust for new year base (March 20 = Day 0)
-  const baseYear = inputUTC.getUTCMonth() >= 2 && inputUTC.getUTCDate() >= 20
+  const msPerDay = 86400000;
+  const baseYear = inputUTC.getUTCMonth() > 2 || (inputUTC.getUTCMonth() === 2 && inputUTC.getUTCDate() >= 20)
     ? inputUTC.getUTCFullYear()
     : inputUTC.getUTCFullYear() - 1;
 
-  const baseDate = new Date(Date.UTC(baseYear, 2, 20)); // March 20, UTC
-
-  const msPerDay = 86400000;
+  const baseDate = new Date(Date.UTC(baseYear, 2, 20)); // March 20 UTC
   const daysSinceNewYear = Math.floor((inputUTC.getTime() - baseDate.getTime()) / msPerDay);
 
   const monthNames = [
@@ -91,33 +85,34 @@ function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
     "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
     "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
     "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
-    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Din",
+    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
     "Ard", "Ashtad", "Asman", "Zam", "Anagran"
   ];
 
   const gathaNames = ["Ahunavad", "Ushtavad", "Spentomad", "VohuKshathra", "Vehishtoish"];
 
-  let zoroastrianDate: string, rozName: string, isGatha: boolean;
+  let month = "";
+  let day = 0;
+  let rozName = "";
+  let isGatha = false;
+  let zoroastrianDate = "";
 
   if (daysSinceNewYear < 360) {
     const monthIndex = Math.floor(daysSinceNewYear / 30);
     const dayIndex = daysSinceNewYear % 30;
-    zoroastrianDate = `${monthNames[monthIndex]} ${dayIndex + 1}`;
+    month = monthNames[monthIndex];
+    day = dayIndex + 1;
     rozName = rozNames[dayIndex];
-    isGatha = false;
+    zoroastrianDate = `${month} ${day}`;
   } else {
     const gathaIndex = daysSinceNewYear - 360;
-    zoroastrianDate = `Esfand ${31 + gathaIndex}`;
     rozName = gathaNames[gathaIndex];
+    zoroastrianDate = `Esfand ${31 + gathaIndex}`;
     isGatha = true;
   }
 
-  // Compute next Monthly Rooz-e (30 days later on Gregorian)
-  const monthlyRoozeDate = new Date(inputUTC.getTime() + 30 * msPerDay);
-
-  // Compute Salrooz: same number of days after March 20 next year
-  const nextBaseDate = new Date(Date.UTC(baseYear + 1, 2, 20)); // March 20 next year
-  const salroozDate = new Date(nextBaseDate.getTime() + daysSinceNewYear * msPerDay);
+  const nextMonthlyRooze = new Date(inputUTC.getTime() + 30 * msPerDay);
+  const nextSalrooz = new Date(Date.UTC(baseYear + 1, 2, 20) + daysSinceNewYear * msPerDay);
 
   // Legacy compatibility fields
   const monthIndex = daysSinceNewYear < 360 ? Math.floor(daysSinceNewYear / 30) : 11;
@@ -126,15 +121,15 @@ function gregorianToZoroastrianFasliFull(gregDateStr: string): ZoroastrianDate {
 
   return {
     gregorianDate: inputUTC.toISOString().slice(0, 10),
-    zoroastrianDate,
-    rozName,
-    isGatha,
+    zoroastrianDate: zoroastrianDate,
+    rozName: rozName,
+    isGatha: isGatha,
     nextMonthlyRooze: {
-      gregorian: monthlyRoozeDate.toISOString().slice(0, 10),
+      gregorian: nextMonthlyRooze.toISOString().slice(0, 10),
       rozName: rozName
     },
     salrooz: {
-      gregorian: salroozDate.toISOString().slice(0, 10),
+      gregorian: nextSalrooz.toISOString().slice(0, 10),
       zoroastrian: zoroastrianDate,
       rozName: rozName
     },
