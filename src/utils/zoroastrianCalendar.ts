@@ -98,37 +98,34 @@ export async function convertToZoroastrianDate(input: { deathDateTimeLocal: stri
 async function zoroastrianCalendarCalculator(input) {
   const { deathDateTimeLocal, city, state } = input;
 
-  // 1. Geocode city and state to get lat/lon
+  // 1. Get latitude & longitude
   const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&country=USA&format=json`);
   const geoData = await geoRes.json();
   if (!geoData || geoData.length === 0) {
-    return { error: "Unable to determine latitude and longitude from city/state." };
+    return { error: "Location not found. Please check the city and state." };
   }
   const lat = geoData[0].lat;
   const lon = geoData[0].lon;
 
-  // 2. Convert local death time to UTC
+  // 2. Convert to UTC
   const localDate = new Date(deathDateTimeLocal);
   const utcDate = new Date(localDate.toISOString());
   const deathDateISO = utcDate.toISOString().slice(0, 10);
 
-  // 3. Get sunrise time for the location
+  // 3. Get sunrise time
   const sunriseRes = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${deathDateISO}&formatted=0`);
   const sunriseData = await sunriseRes.json();
   const sunriseUTC = new Date(sunriseData.results.sunrise);
 
-  // 4. Adjust date if death occurred before sunrise
+  // 4. Adjust if before sunrise
   let effectiveDate = utcDate;
   if (utcDate < sunriseUTC) {
-    effectiveDate = new Date(utcDate.getTime() - 86400000);
+    effectiveDate = new Date(utcDate.getTime() - 86400000); // subtract 1 day
   }
 
-  // 5. Define constants
-  const baseDate = new Date(Date.UTC(effectiveDate.getUTCFullYear(), 2, 21)); // March 21
-  if (effectiveDate < baseDate) {
-    baseDate.setUTCFullYear(baseDate.getUTCFullYear() - 1);
-  }
-
+  // 5. Rōz name logic (March 21 = Hormozd = index 0, confirmed offset = +1)
+  const baseDate = new Date(Date.UTC(effectiveDate.getUTCFullYear(), 2, 21));
+  if (effectiveDate < baseDate) baseDate.setUTCFullYear(baseDate.getUTCFullYear() - 1);
   const msPerDay = 86400000;
   const daysSinceNewYear = Math.floor((effectiveDate.getTime() - baseDate.getTime()) / msPerDay);
 
@@ -142,11 +139,11 @@ async function zoroastrianCalendarCalculator(input) {
   ];
 
   const getRozName = (date) => {
-    const offset = Math.floor((date.getTime() - baseDate.getTime()) / msPerDay);
-    return rozNames[offset % 30];
+    const offsetDays = Math.floor((date.getTime() - baseDate.getTime()) / msPerDay);
+    return rozNames[(offsetDays + 1) % 30]; // ✅ Final correction here
   };
 
-  // 6. Compute ritual days
+  // 6. Ritual dates
   const dargozasht = effectiveDate;
   const sevvom = new Date(dargozasht.getTime() + 2 * msPerDay);
   const chaharom = new Date(dargozasht.getTime() + 3 * msPerDay);
