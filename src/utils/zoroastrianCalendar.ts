@@ -123,11 +123,10 @@ async function zoroastrianCalendarCalculator(input) {
     effectiveDate = new Date(utcDate.getTime() - 86400000); // subtract 1 day
   }
 
-  // 5. Rōz name logic (March 21 = Hormozd = index 0, confirmed offset = +1)
+  // 5. Rōz name logic (March 21 = Hormozd = index 0)
   const baseDate = new Date(Date.UTC(effectiveDate.getUTCFullYear(), 2, 21));
   if (effectiveDate < baseDate) baseDate.setUTCFullYear(baseDate.getUTCFullYear() - 1);
   const msPerDay = 86400000;
-  const daysSinceNewYear = Math.floor((effectiveDate.getTime() - baseDate.getTime()) / msPerDay);
 
   const rozNames = [
     "Hormozd", "Bahman", "Ardibehesht", "Shahrivar", "Spandarmad",
@@ -140,7 +139,7 @@ async function zoroastrianCalendarCalculator(input) {
 
   const getRozName = (date) => {
     const offsetDays = Math.floor((date.getTime() - baseDate.getTime()) / msPerDay);
-    return rozNames[(offsetDays + 1) % 30]; // ✅ Final correction here
+    return rozNames[offsetDays % 30];
   };
 
   // 6. Ritual dates
@@ -148,7 +147,7 @@ async function zoroastrianCalendarCalculator(input) {
   const sevvom = new Date(dargozasht.getTime() + 2 * msPerDay);
   const chaharom = new Date(dargozasht.getTime() + 3 * msPerDay);
   const dahhom = new Date(dargozasht.getTime() + 9 * msPerDay);
-  const siroozeh = new Date(dargozasht.getTime() + 12 * msPerDay);
+  const siroozeh = new Date(dargozasht.getTime() + 29 * msPerDay);
   const salrooz = new Date(Date.UTC(dargozasht.getUTCFullYear() + 1, dargozasht.getUTCMonth(), dargozasht.getUTCDate()));
 
   return {
