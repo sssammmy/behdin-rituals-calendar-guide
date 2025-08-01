@@ -131,11 +131,11 @@ async function zoroastrianCalendarCalculator(input) {
 
   const rozNames = [
     "Hormozd", "Bahman", "Ardibehesht", "Shahrivar", "Spandarmad",
-    "Khordad", "Amordad", "Day-Ādur", "Ādur", "Āban",
-    "Khorshed", "Māh", "Tir", "Gushnasp", "Day-Mihr",
-    "Mihr", "Srosh", "Rashn", "Farvardin", "Day-Bedin",
-    "Bahram", "Ram", "Govad", "Dae-pa-Den", "Den",
-    "Ard", "Ashtad", "Asman", "Zam", "Anagran"
+    "Khordad", "Amordad", "Day-pa-Adar", "Adar", "Aban",
+    "Khorshed", "Mah", "Tir", "Gosh", "Day-pa-Mihr",
+    "Mihr", "Srosh", "Rashn", "Fravashi", "Verethraghna",
+    "Bahram", "Ram", "Govad", "Day-pa-Den", "Den",
+    "Ard", "Ashtad", "Asman", "Zam", "Matraespand"
   ];
 
   const getRozName = (date) => {
