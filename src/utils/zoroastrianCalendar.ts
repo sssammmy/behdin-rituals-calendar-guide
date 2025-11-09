@@ -22,15 +22,18 @@ const GATHA_DAYS = [
 ];
 
 export interface ZoroastrianDate {
+  gregorianDateTime: string;
   gregorianDate: string;
   zoroastrianDate: string;
   rozName: string;
   isGatha: boolean;
   nextMonthlyRooze: {
+    gregorianDateTime: string;
     gregorian: string;
     rozName: string;
   };
   salrooz: {
+    gregorianDateTime: string;
     gregorian: string;
     zoroastrian: string;
     rozName: string;
@@ -49,7 +52,8 @@ export interface ZoroastrianDate {
 
 export interface MonthlyRoze {
   month: string;
-  gregorianDate: Date;
+  gregorianDateTime: string;
+  gregorianDate: string;
   zoroastrianDate: ZoroastrianDate;
   isSkipped?: boolean;
   reason?: string;
@@ -65,20 +69,28 @@ export async function convertToZoroastrianDate(input: { deathDateTimeLocal: stri
   }
   
   // Create backward-compatible output using dargozasht date
-  const dargozashtDate = result.adjustedRoozEDargozasht;
+  const dargozashtDateTime = result.adjustedRoozEDargozasht;
+  const dargozashtDate = dargozashtDateTime.slice(0, 10);
   const rozName = result.rozNames.roozEDargozasht;
-  
+  const roozESevvomDateTime = result.roozESevvom;
+  const roozESevvomDate = roozESevvomDateTime.slice(0, 10);
+  const salroozDateTime = result.salrooz;
+  const salroozDate = salroozDateTime.slice(0, 10);
+
   return {
+    gregorianDateTime: dargozashtDateTime,
     gregorianDate: dargozashtDate,
     zoroastrianDate: `Day ${rozName}`,
     rozName: rozName,
     isGatha: false,
     nextMonthlyRooze: {
-      gregorian: result.roozESevvom,
+      gregorianDateTime: roozESevvomDate,
+      gregorian: roozESevvomDate,
       rozName: result.rozNames.roozESevvom
     },
     salrooz: {
-      gregorian: result.salrooz,
+      gregorianDateTime: salroozDateTime,
+      gregorian: salroozDate,
       zoroastrian: `Day ${result.rozNames.salrooz}`,
       rozName: result.rozNames.salrooz
     },
@@ -109,11 +121,13 @@ async function zoroastrianCalendarCalculator(input) {
 
   // 2. Convert to UTC
   const localDate = new Date(deathDateTimeLocal);
+  // toISOString converts the time to UTC, so offset it with the current time zone
+  const offsetLocalDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+  const offsetLocalDateISO = offsetLocalDate.toISOString().slice(0, 10);
   const utcDate = new Date(localDate.toISOString());
-  const deathDateISO = utcDate.toISOString().slice(0, 10);
 
   // 3. Get sunrise time
-  const sunriseRes = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${deathDateISO}&formatted=0`);
+  const sunriseRes = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${offsetLocalDateISO}&formatted=0`);
   const sunriseData = await sunriseRes.json();
   const sunriseUTC = new Date(sunriseData.results.sunrise);
 
@@ -151,12 +165,12 @@ async function zoroastrianCalendarCalculator(input) {
   const salrooz = new Date(Date.UTC(dargozasht.getUTCFullYear() + 1, dargozasht.getUTCMonth(), dargozasht.getUTCDate()));
 
   return {
-    adjustedRoozEDargozasht: dargozasht.toISOString().slice(0, 10),
-    roozESevvom: sevvom.toISOString().slice(0, 10),
-    roozEChaharom: chaharom.toISOString().slice(0, 10),
-    roozEDahhom: dahhom.toISOString().slice(0, 10),
-    siroozeh: siroozeh.toISOString().slice(0, 10),
-    salrooz: salrooz.toISOString().slice(0, 10),
+    adjustedRoozEDargozasht: dargozasht.toISOString(),
+    roozESevvom: sevvom.toISOString(),
+    roozEChaharom: chaharom.toISOString(),
+    roozEDahhom: dahhom.toISOString(),
+    siroozeh: siroozeh.toISOString(),
+    salrooz: salrooz.toISOString(),
     rozNames: {
       roozEDargozasht: getRozName(dargozasht),
       roozESevvom: getRozName(sevvom),
@@ -186,7 +200,8 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
     // Skip Farvardin month (no corresponding day)
     monthlyRoze.push({
       month: "Farvardin",
-      gregorianDate: new Date(), // placeholder
+      gregorianDateTime: new Date().toISOString(), // placeholder
+      gregorianDate: new Date().toISOString().slice(0, 10), // placeholder
       zoroastrianDate: deathZoroastrianDate,
       isSkipped: true,
       reason: "No corresponding day in Farvardin for Gatha death"
@@ -205,7 +220,8 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
       
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1],
-        gregorianDate: monthDate,
+        gregorianDateTime: monthDate.toISOString(),
+        gregorianDate: monthDate.toISOString().slice(0, 10),
         zoroastrianDate: monthZoroastrianDate
       });
     }
@@ -224,7 +240,8 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
       
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1] || `Month ${i}`,
-        gregorianDate: monthDate,
+        gregorianDateTime: monthDate.toISOString(),
+        gregorianDate: monthDate.toISOString().slice(0, 10),
         zoroastrianDate: monthZoroastrianDate
       });
     }
@@ -242,7 +259,8 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
       
       monthlyRoze.push({
         month: ZOROASTRIAN_MONTHS[i - 1] || `Month ${i}`,
-        gregorianDate: monthDate,
+        gregorianDateTime: monthDate.toISOString(),
+        gregorianDate: monthDate.toISOString().slice(0, 10),
         zoroastrianDate: monthZoroastrianDate
       });
     }

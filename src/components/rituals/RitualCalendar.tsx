@@ -136,8 +136,8 @@ const RitualCalendar = () => {
       }
 
       // Calculate monthly Rōz-e ceremonies
-      const monthlyRoze = await calculateMonthlyRoze(passingDateTime, city, state, 12);
-      
+      const monthlyRoze = await calculateMonthlyRoze(new Date(deathZoroastrianDate.gregorianDateTime), city, state, 12);
+
       // Get special case notes
       const notes = getSpecialCaseNotes(deathZoroastrianDate);
 
@@ -151,6 +151,13 @@ const RitualCalendar = () => {
       setIsLoading(false);
     }
   };
+
+  function formatUTC(date: string | number | Date, fmt: string) {
+    const d = new Date(date);
+    // shift the date so that local formatting reflects UTC time
+    const utc = new Date(d.getTime() + d.getTimezoneOffset() * 60000);
+    return format(utc, fmt);
+  }
 
   return (
     <div className="container-custom py-8">
@@ -305,9 +312,9 @@ const RitualCalendar = () => {
                         </div>
                         <div className="mt-4 md:mt-0 md:ml-4 text-right">
                           <div className="inline-block bg-zoroastrian-light px-4 py-3 rounded-md text-center">
-                            <div className="text-sm text-gray-600">Gregorian Date</div>
-                            <div className="font-medium">{format(ceremony.date, "MMMM d, yyyy")}</div>
-                            <div className="text-xs text-gray-500 mt-1">{format(ceremony.date, "EEEE")}</div>
+                            <div className="text-sm text-gray-600">Gregorian Date & Time</div>
+                            <div className="font-medium">{formatUTC(ceremony.zoroastrianDate.gregorianDateTime, "MMMM d, yyyy h:mm a")}</div>
+                            <div className="text-xs text-gray-500 mt-1">{formatUTC(ceremony.zoroastrianDate.gregorianDateTime, "EEEE")}</div>
                           </div>
                         </div>
                       </div>
@@ -332,7 +339,7 @@ const RitualCalendar = () => {
                               <p className="text-sm text-gray-500 italic">{roze.reason}</p>
                             ) : (
                               <>
-                                <p className="text-sm text-gray-600">{format(roze.gregorianDate, "MMMM d, yyyy")}</p>
+                                <p className="text-sm text-gray-600">{formatUTC(roze.gregorianDateTime, "MMMM d, yyyy h:mm a")}</p>
                                 <p className="text-xs text-gray-500">{formatZoroastrianDate(roze.zoroastrianDate)}</p>
                               </>
                             )}
