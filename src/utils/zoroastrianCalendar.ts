@@ -59,14 +59,10 @@ export interface MonthlyRoze {
   reason?: string;
 }
 
-export async function convertToZoroastrianDate(input: { deathDateTimeLocal: string; city: string; state: string }): Promise<ZoroastrianDate> {
+export function convertToZoroastrianDate(input: { deathDateTimeLocal: string; city: string; state: string }): ZoroastrianDate {
   console.log('Converting date:', input);
-  const result = await zoroastrianCalendarCalculator(input);
+  const result = zoroastrianCalendarCalculator(input);
   console.log('Conversion result:', result);
-  
-  if ('error' in result) {
-    throw new Error(result.error);
-  }
   
   // Create backward-compatible output using dargozasht date
   const dargozashtDateTime = result.adjustedRoozEDargozasht;
@@ -107,34 +103,74 @@ export async function convertToZoroastrianDate(input: { deathDateTimeLocal: stri
   };
 }
 
-async function zoroastrianCalendarCalculator(input) {
+// US city coordinates lookup (approximate)
+const US_CITY_COORDS: Record<string, { lat: number; lon: number }> = {
+  "irvine,ca": { lat: 33.6846, lon: -117.8265 },
+  "los angeles,ca": { lat: 34.0522, lon: -118.2437 },
+  "san francisco,ca": { lat: 37.7749, lon: -122.4194 },
+  "san diego,ca": { lat: 32.7157, lon: -117.1611 },
+  "houston,tx": { lat: 29.7604, lon: -95.3698 },
+  "chicago,il": { lat: 41.8781, lon: -87.6298 },
+  "new york,ny": { lat: 40.7128, lon: -74.0060 },
+  "phoenix,az": { lat: 33.4484, lon: -112.0740 },
+  "seattle,wa": { lat: 47.6062, lon: -122.3321 },
+  "miami,fl": { lat: 25.7617, lon: -80.1918 },
+  "boston,ma": { lat: 42.3601, lon: -71.0589 },
+  "denver,co": { lat: 39.7392, lon: -104.9903 },
+  "atlanta,ga": { lat: 33.7490, lon: -84.3880 },
+  "dallas,tx": { lat: 32.7767, lon: -96.7970 },
+  "philadelphia,pa": { lat: 39.9526, lon: -75.1652 },
+  "washington,dc": { lat: 38.9072, lon: -77.0369 },
+  "las vegas,nv": { lat: 36.1699, lon: -115.1398 },
+  "portland,or": { lat: 45.5152, lon: -122.6784 },
+  "austin,tx": { lat: 30.2672, lon: -97.7431 },
+  "san jose,ca": { lat: 37.3382, lon: -121.8863 },
+};
+
+// Calculate sunrise time using solar position algorithm
+function calculateSunrise(lat: number, lon: number, date: Date): Date {
+  const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000);
+  
+  // Solar declination
+  const declination = -23.45 * Math.cos((2 * Math.PI / 365) * (dayOfYear + 10));
+  const declinationRad = declination * (Math.PI / 180);
+  const latRad = lat * (Math.PI / 180);
+  
+  // Hour angle at sunrise
+  const cosHourAngle = -Math.tan(latRad) * Math.tan(declinationRad);
+  const hourAngle = Math.acos(Math.max(-1, Math.min(1, cosHourAngle))) * (180 / Math.PI);
+  
+  // Sunrise in hours (solar noon is ~12:00 + longitude correction)
+  const solarNoon = 12 - (lon / 15); // Simple longitude correction
+  const sunriseHour = solarNoon - (hourAngle / 15);
+  
+  const sunrise = new Date(date);
+  sunrise.setHours(Math.floor(sunriseHour), Math.round((sunriseHour % 1) * 60), 0, 0);
+  
+  return sunrise;
+}
+
+function zoroastrianCalendarCalculator(input: { deathDateTimeLocal: string; city: string; state: string }) {
   const { deathDateTimeLocal, city, state } = input;
 
-  // 1. Get latitude & longitude
-  const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&country=USA&format=json`);
-  const geoData = await geoRes.json();
-  if (!geoData || geoData.length === 0) {
-    return { error: "Location not found. Please check the city and state." };
-  }
-  const lat = geoData[0].lat;
-  const lon = geoData[0].lon;
+  // 1. Get latitude & longitude from lookup table
+  const cityKey = `${city.toLowerCase().trim()},${state.toLowerCase().trim()}`;
+  const coords = US_CITY_COORDS[cityKey];
+  
+  // Default to Los Angeles if city not found
+  const lat = coords?.lat ?? 34.0522;
+  const lon = coords?.lon ?? -118.2437;
 
-  // 2. Convert to UTC
+  // 2. Parse the local date/time
   const localDate = new Date(deathDateTimeLocal);
-  // toISOString converts the time to UTC, so offset it with the current time zone
-  const offsetLocalDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
-  const offsetLocalDateISO = offsetLocalDate.toISOString().slice(0, 10);
-  const utcDate = new Date(localDate.toISOString());
+  
+  // 3. Calculate sunrise for that date and location
+  const sunriseLocal = calculateSunrise(lat, lon, localDate);
 
-  // 3. Get sunrise time
-  const sunriseRes = await fetch(`https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lon}&date=${offsetLocalDateISO}&formatted=0`);
-  const sunriseData = await sunriseRes.json();
-  const sunriseUTC = new Date(sunriseData.results.sunrise);
-
-  // 4. Adjust if before sunrise
-  let effectiveDate = utcDate;
-  if (utcDate < sunriseUTC) {
-    effectiveDate = new Date(utcDate.getTime() - 86400000); // subtract 1 day
+  // 4. Adjust if before sunrise - use previous Zoroastrian day
+  let effectiveDate = new Date(localDate);
+  if (localDate < sunriseLocal) {
+    effectiveDate = new Date(localDate.getTime() - 86400000); // subtract 1 day
   }
 
   // 5. Rōz name logic (March 21 = Hormozd = index 0)
@@ -187,8 +223,8 @@ export function formatZoroastrianDate(zDate: ZoroastrianDate): string {
   return zDate.rozName;
 }
 
-export async function calculateMonthlyRoze(deathDate: Date, city: string, state: string, numberOfMonths: number = 12): Promise<MonthlyRoze[]> {
-  const deathZoroastrianDate = await convertToZoroastrianDate({
+export function calculateMonthlyRoze(deathDate: Date, city: string, state: string, numberOfMonths: number = 12): MonthlyRoze[] {
+  const deathZoroastrianDate = convertToZoroastrianDate({
     deathDateTimeLocal: deathDate.toISOString(),
     city: city,
     state: state
@@ -212,7 +248,7 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
       const monthDate = addMonths(deathDate, i);
       const correspondingDay = deathZoroastrianDate.dayNumber; // Use same day number
       
-      const monthZoroastrianDate = await convertToZoroastrianDate({
+      const monthZoroastrianDate = convertToZoroastrianDate({
         deathDateTimeLocal: monthDate.toISOString(),
         city: city,
         state: state
@@ -232,7 +268,7 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
     for (let i = 1; i <= numberOfMonths; i++) {
       const monthDate = addMonths(deathDate, i);
       
-      const monthZoroastrianDate = await convertToZoroastrianDate({
+      const monthZoroastrianDate = convertToZoroastrianDate({
         deathDateTimeLocal: monthDate.toISOString(),
         city: city,
         state: state
@@ -251,7 +287,7 @@ export async function calculateMonthlyRoze(deathDate: Date, city: string, state:
     for (let i = 1; i <= numberOfMonths; i++) {
       const monthDate = addMonths(deathDate, i);
       
-      const monthZoroastrianDate = await convertToZoroastrianDate({
+      const monthZoroastrianDate = convertToZoroastrianDate({
         deathDateTimeLocal: monthDate.toISOString(),
         city: city,
         state: state
