@@ -31,7 +31,7 @@ const Hero = () => {
             during the difficult times of mourning and remembrance.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <Link 
               to="/calendar" 
               className="bg-zoroastrian-blue text-white px-8 py-3 rounded-md hover:bg-zoroastrian-blue/90 transition font-medium"
@@ -43,6 +43,12 @@ const Hero = () => {
               className="bg-zoroastrian-gold text-zoroastrian-blue px-8 py-3 rounded-md hover:bg-zoroastrian-gold/90 transition font-medium"
             >
               Explore Rituals
+            </Link>
+            <Link 
+              to="/avesta-streams" 
+              className="bg-zoroastrian-terracotta text-white px-8 py-3 rounded-md hover:bg-zoroastrian-terracotta/90 transition font-medium"
+            >
+              Avesta Streams
             </Link>
           </div>
         </div>
