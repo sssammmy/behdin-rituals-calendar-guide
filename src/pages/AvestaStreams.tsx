@@ -5,31 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 
 const AvestaStreams = () => {
-  const baseUrl = "https://onedrive.live.com/download?cid=5F3C6ADD5B53F3F6&resid=5F3C6ADD5B53F3F6%21";
-  
   const streams = [
-    { name: "Pish-Goftar (Introduction)", url: `${baseUrl}18732&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Sroush-vaj", url: `${baseUrl}18733&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Koshti-Bastan", url: `${baseUrl}18734&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Gah-e-Havan", url: `${baseUrl}18735&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Gah-e-Rapithwan", url: `${baseUrl}18736&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Gah-e-Oziran", url: `${baseUrl}18737&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Gah-e-Aywisruthrem", url: `${baseUrl}18738&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Gah-e-Oshihan", url: `${baseUrl}18739&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Khorshid Niyayesh", url: `${baseUrl}18740&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Mehr Niyayesh", url: `${baseUrl}18741&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Mah Niyayesh", url: `${baseUrl}18742&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Atash Niyayesh", url: `${baseUrl}18743&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Abzour", url: `${baseUrl}18744&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Ormazd Yasht", url: `${baseUrl}18745&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Ardibehesht Yasht", url: `${baseUrl}18746&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Soroush Yasht-e-Shab", url: `${baseUrl}18747&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Haftan Yasht", url: `${baseUrl}18748&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Verahram Yasht", url: `${baseUrl}18749&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Pish-Goftar-e-Yazeshn-Khani", url: `${baseUrl}18750&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Afringan-e-Dahman", url: `${baseUrl}18751&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Karde-e-Soroush", url: `${baseUrl}18752&authkey=!AHVnfekNWIZN8ps` },
-    { name: "Hamazour-e-Dahman", url: `${baseUrl}18753&authkey=!AHVnfekNWIZN8ps` }
+    { name: "Ashem Vohoo", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Ashem_Voho.mp3" },
+    { name: "Yata Ahoo", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Yataaho.mp3" },
+    { name: "Soroosh Vaj", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Sroush_vaj.mp3" },
+    { name: "Koshti", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Koshti_Bastan.mp3" },
+    { name: "Gahe Havan", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Gah_e_Havan.mp3" },
+    { name: "Gahe Rapithwan", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Gah_e_Rapithwan.mp3" },
+    { name: "Gahe Oziran", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Gah_e_Oziran.mp3" },
+    { name: "Gahe Aywisruthrem", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Gah_e_Aywisruthrem.mp3" },
+    { name: "Gahe Oshihan", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Gah_e_Oshihan.mp3" },
+    { name: "Afaringan", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Afringan_e_Dahman.mp3" },
+    { name: "Karde-e-Soroosh", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Karde_e_Soroush.mp3" },
+    { name: "Tandorosti", url: "https://www.mehrmazdayasnan.com/Data/MP3/Avesta_Mobed_Firozgari/Tandorsti.mp3" }
   ];
 
   return (
